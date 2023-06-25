@@ -18,7 +18,7 @@ import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
 // const controls = new OrbitControls( camera, renderer.domElement );
 
-let container, stats, clock, gui:any, mixer: any, actions: any, activeAction: any, previousAction;
+let container, stats, clock, gui: any, mixer: any, actions: any, activeAction: any, previousAction;
 let model, face;
 
 const api = { state: 'Walking' };
@@ -43,15 +43,15 @@ let k = width / height; //窗口宽高比
 let s = 200; //三维场景显示范围控制系数，系数越大，显示的范围越大
 //创建相机对象
 let camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
-camera.position.set(200, 300, 200); //设置相机位置
+camera.position.set(100, 200, 200); //设置相机位置
 camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
 
 /**
  * 光源设置
  */
 //点光源
-let point = new THREE.PointLight(0xffffff, 3);
-point.position.set(400, 200, 300); //点光源位置
+let point = new THREE.PointLight(0xffffff, 10);
+point.position.set(600, 800, 1000); //点光源位置
 scene.add(point); //点光源添加到场景中
 //环境光
 // let ambient = new THREE.AmbientLight(0x444444, 3);
@@ -83,7 +83,7 @@ scene.add(point); //点光源添加到场景中
 
 //创建一个WebGL渲染器并设置其大小
 let renderer = new THREE.WebGLRenderer();
-renderer.setClearColor(new THREE.Color(0xffff00))
+renderer.setClearColor(new THREE.Color(0xe6e6e6))
 renderer.setSize(window.innerWidth, window.innerHeight)
 
 
@@ -130,7 +130,7 @@ const initModel = () => {
 
     loader.load('/models/datacenter.glb', (gltf) => {
         let model = gltf.scene
-        model.scale.set(60, 60, 60)
+        model.scale.set(1, 1, 1)
         scene.add(model);
 
 
@@ -183,124 +183,124 @@ const checkNameIncludes = (obj: any, str: string): boolean => {
 
 
 
-const createGUI = (model: any, animations: any) => {
+// const createGUI = (model: any, animations: any) => {
 
-    const states = ['Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Standing'];
-    const emotes = ['Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp'];
+//     const states = ['Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Standing'];
+//     const emotes = ['Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp'];
 
-    gui = new GUI();
+//     gui = new GUI();
 
-    mixer = new THREE.AnimationMixer(model);
+//     mixer = new THREE.AnimationMixer(model);
 
-    actions = {};
+//     actions = {};
 
-    for (let i = 0; i < animations.length; i++) {
+//     for (let i = 0; i < animations.length; i++) {
 
-        const clip = animations[i];
-        const action = mixer.clipAction(clip);
-        actions[clip.name] = action;
+//         const clip = animations[i];
+//         const action = mixer.clipAction(clip);
+//         actions[clip.name] = action;
 
-        if (emotes.indexOf(clip.name) >= 0 || states.indexOf(clip.name) >= 4) {
+//         if (emotes.indexOf(clip.name) >= 0 || states.indexOf(clip.name) >= 4) {
 
-            action.clampWhenFinished = true;
-            action.loop = THREE.LoopOnce;
+//             action.clampWhenFinished = true;
+//             action.loop = THREE.LoopOnce;
 
-        }
+//         }
 
-    }
+//     }
 
-    // states
+//     // states
 
-    const statesFolder = gui.addFolder('States');
+//     const statesFolder = gui.addFolder('States');
 
-    const clipCtrl = statesFolder.add(api, 'state').options(states);
+//     const clipCtrl = statesFolder.add(api, 'state').options(states);
 
-    clipCtrl.onChange(function () {
+//     clipCtrl.onChange(function () {
 
-        fadeToAction(api.state, 0.5);
+//         fadeToAction(api.state, 0.5);
 
-    });
+//     });
 
-    statesFolder.open();
+//     statesFolder.open();
 
-    // emotes
+//     // emotes
 
-    const emoteFolder = gui.addFolder('Emotes');
+//     const emoteFolder = gui.addFolder('Emotes');
 
-    for (let i = 0; i < emotes.length; i++) {
+//     for (let i = 0; i < emotes.length; i++) {
 
-        createEmoteCallback(emotes[i]);
+//         createEmoteCallback(emotes[i]);
 
-    }
+//     }
 
-    emoteFolder.open();
+//     emoteFolder.open();
 
-    // expressions
+//     // expressions
 
-    face = model.getObjectByName('Head_4');
+//     face = model.getObjectByName('Head_4');
 
-    const expressions = Object.keys(face.morphTargetDictionary);
-    const expressionFolder = gui.addFolder('Expressions');
+//     const expressions = Object.keys(face.morphTargetDictionary);
+//     const expressionFolder = gui.addFolder('Expressions');
 
-    for (let i = 0; i < expressions.length; i++) {
+//     for (let i = 0; i < expressions.length; i++) {
 
-        expressionFolder.add(face.morphTargetInfluences, i, 0, 1, 0.01).name(expressions[i]);
+//         expressionFolder.add(face.morphTargetInfluences, i, 0, 1, 0.01).name(expressions[i]);
 
-    }
+//     }
 
-    activeAction = actions['Walking'];
-    activeAction.play();
+//     activeAction = actions['Walking'];
+//     activeAction.play();
 
-    expressionFolder.open();
+//     expressionFolder.open();
 
-}
+// }
 
-const emoteFolder = gui.addFolder( 'Emotes' );
-
-
-
-const createEmoteCallback = (name:any) => {
-
-    api[name] = function () {
-
-        fadeToAction(name, 0.2);
-
-        mixer.addEventListener('finished', restoreState);
-
-    };
-
-    emoteFolder.add(api, name);
-
-}
-
-const restoreState = () => {
-
-    mixer.removeEventListener('finished', restoreState);
-
-    fadeToAction(api.state, 0.2);
-
-}
+// const emoteFolder = gui.addFolder('Emotes');
 
 
-const fadeToAction = (name, duration) => {
 
-    previousAction = activeAction;
-    activeAction = actions[name];
+// const createEmoteCallback = (name: any) => {
 
-    if (previousAction !== activeAction) {
+//     api[name] = function () {
 
-        previousAction.fadeOut(duration);
+//         fadeToAction(name, 0.2);
 
-    }
+//         mixer.addEventListener('finished', restoreState);
 
-    activeAction
-        .reset()
-        .setEffectiveTimeScale(1)
-        .setEffectiveWeight(1)
-        .fadeIn(duration)
-        .play();
+//     };
 
-}
+//     emoteFolder.add(api, name);
+
+// }
+
+// const restoreState = () => {
+
+//     mixer.removeEventListener('finished', restoreState);
+
+//     fadeToAction(api.state, 0.2);
+
+// }
+
+
+// const fadeToAction = (name, duration) => {
+
+//     previousAction = activeAction;
+//     activeAction = actions[name];
+
+//     if (previousAction !== activeAction) {
+
+//         previousAction.fadeOut(duration);
+
+//     }
+
+//     activeAction
+//         .reset()
+//         .setEffectiveTimeScale(1)
+//         .setEffectiveWeight(1)
+//         .fadeIn(duration)
+//         .play();
+
+// }
 
 
 
