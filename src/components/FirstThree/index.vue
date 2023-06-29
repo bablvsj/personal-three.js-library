@@ -272,20 +272,20 @@ const render = () => {
 
 const initModel = () => {
 
-    // const num = 1000; //控制长方体模型数量
-    // for (let i = 0; i < num; i++) {
-    //     const geometry = new THREE.BoxGeometry(5, 5, 5);
-    //     const material = new THREE.MeshLambertMaterial({
-    //         color: 0x00ffff
-    //     });
-    //     const mesh = new THREE.Mesh(geometry, material);
-    //     // 随机生成长方体xyz坐标
-    //     const x = (Math.random() - 0.5) * 500
-    //     const y = (Math.random() - 0.5) * 500
-    //     const z = (Math.random() - 0.5) * 700
-    //     mesh.position.set(x, y, z)
-    //     scene.add(mesh); // 模型对象插入场景中
-    // }
+    const num = 100; //控制长方体模型数量
+    for (let i = 0; i < num; i++) {
+        const geometry = new THREE.BoxGeometry(5, 5, 5);
+        const material = new THREE.MeshLambertMaterial({
+            color: 0x00ffff
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        // 随机生成长方体xyz坐标
+        const x = (Math.random() - 0.5) * 500
+        const y = (Math.random() - 0.5) * 500
+        const z = (Math.random() - 0.5) * 700
+        mesh.position.set(x, y, z)
+        scene.add(mesh); // 模型对象插入场景中
+    }
 
     const geometry = new THREE.BoxGeometry(50, 50, 50);
     //材质对象Material
