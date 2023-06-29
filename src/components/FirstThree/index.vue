@@ -19,9 +19,13 @@ import { DRACOLoader, } from "three/examples/jsm/loaders/DRACOLoader"
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 
+<<<<<<< HEAD
 
 
 let container, clock, gui: any, mixer: any, actions: any, activeAction: any, previousAction;
+=======
+let container, stats, clock, gui: any, mixer: any, actions: any, activeAction: any, previousAction;
+>>>>>>> d7ca341102b94039d5bc8b9a113eaceb2f1f8e76
 let model, face;
 
 const api = { state: 'Walking' };
@@ -44,18 +48,29 @@ let height = window.innerHeight; //窗口高度
 let k = width / height; //窗口宽高比
 let s = 500; //三维场景显示范围控制系数，系数越大，显示的范围越大
 //创建相机对象
+<<<<<<< HEAD
 let camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
 camera.position.set(100, 100, 100); //设置相机位置
 // camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
 camera.lookAt(200, 200, 200);
 
+=======
+let camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+camera.position.set(100, 200, 200); //设置相机位置
+camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
+>>>>>>> d7ca341102b94039d5bc8b9a113eaceb2f1f8e76
 
 /**
  * 光源设置
  */
 //点光源
+<<<<<<< HEAD
 let point = new THREE.PointLight(0xffffff, 3);
 point.position.set(100, 200, 300); //点光源位置
+=======
+let point = new THREE.PointLight(0xffffff, 10);
+point.position.set(600, 800, 1000); //点光源位置
+>>>>>>> d7ca341102b94039d5bc8b9a113eaceb2f1f8e76
 scene.add(point); //点光源添加到场景中
 //环境光
 // let ambient = new THREE.AmbientLight(0x444444, 3);
@@ -174,6 +189,7 @@ const load = () => {
 
 
 
+<<<<<<< HEAD
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -212,6 +228,12 @@ const material2 = new THREE.MeshBasicMaterial({
 });
 const wireframeCube = new THREE.Mesh(geometry2, material2);
 scene.add(wireframeCube);
+=======
+//创建一个WebGL渲染器并设置其大小
+let renderer = new THREE.WebGLRenderer();
+renderer.setClearColor(new THREE.Color(0xe6e6e6))
+renderer.setSize(window.innerWidth, window.innerHeight)
+>>>>>>> d7ca341102b94039d5bc8b9a113eaceb2f1f8e76
 
 // 环境光
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
@@ -299,6 +321,7 @@ const initModel = () => {
     }
 
 
+<<<<<<< HEAD
     // const loader = new GLTFLoader();
     // loader.load('/models/porsche_911_930_turbo.glb', (gltf) => {
     //     let model = gltf.scene
@@ -308,6 +331,26 @@ const initModel = () => {
     // }, undefined, function (error) {
     //     console.error(error);
     // });
+=======
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.addEventListener('change', () => {
+        renderer.render(scene, camera);
+    });//监听鼠标、键盘事件
+
+
+    loader.load('/models/datacenter.glb', (gltf) => {
+        let model = gltf.scene
+        model.scale.set(1, 1, 1)
+        scene.add(model);
+
+
+        // baseModel.setScalc(0.2);
+        // baseModel.object.rotation.y = Math.PI / 2;
+        // const model = baseModel.gltf.scene;
+        model.position.set(0, 0, 0);
+        model.name = '机房';
+        // baseModel.openCastShadow();
+>>>>>>> d7ca341102b94039d5bc8b9a113eaceb2f1f8e76
 
 
     // const controls = new OrbitControls(camera, renderer.domElement);
@@ -429,11 +472,19 @@ const checkNameIncludes = (obj: any, str: string): boolean => {
 
 // }
 
+<<<<<<< HEAD
 // const emoteFolder = gui.addFolder( 'Emotes' );
 
 
 
 // const createEmoteCallback = (name:any) => {
+=======
+// const emoteFolder = gui.addFolder('Emotes');
+
+
+
+// const createEmoteCallback = (name: any) => {
+>>>>>>> d7ca341102b94039d5bc8b9a113eaceb2f1f8e76
 
 //     api[name] = function () {
 
