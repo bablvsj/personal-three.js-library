@@ -1,5 +1,5 @@
 <template>
-    <div id="FirstThree" style="height: 100%;width:100%;"></div>
+    <div id="FirstThree" style="height: 400px;width:400px;overflow: hidden;"></div>
 </template>
   
 <script lang="ts" setup name="FirstThree">

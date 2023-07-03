@@ -18,7 +18,8 @@
         </Panel>
       </div> -->
       <!-- <Sence></Sence> -->
-      <FirstThree></FirstThree>
+      <!-- <FirstThree></FirstThree> -->
+      <SevenA></SevenA>
       
     </div>
   </div>
@@ -31,6 +32,7 @@
 // import LineCharts from '@/components/Charts/LineChart.vue';
 // import PieChart from '@/components/Charts/PieChart.vue';
 import FirstThree from '@/components/FirstThree/index.vue';
+import SevenA from '@/components/SevenA.vue';
 </script>
 
 <style scope>
