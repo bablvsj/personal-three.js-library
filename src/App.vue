@@ -1,21 +1,22 @@
 <template>
-  <div class="main">
-    <Layout></Layout>
+  <div class="header-nav">
+    <router-link class="li" to="/home">Home</router-link>
+    <router-link class="li" to="/sevenA">SevenA</router-link>
+    <router-link class="li" to="/sevenB">SevenB</router-link>
   </div>
+  <router-view />
 </template>
 
-<script lang="ts" setup>
-import Layout from './layout/index.vue';
-
-</script>
-
-<style>
-body, html {
+<style lang="scss">
+body,
+html {
   background-color: #000;
 }
+
 body {
   overflow: hidden;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -35,4 +36,16 @@ body {
   /* min-width: 850px; */
   /* box-sizing: border-box; */
 }
-</style>
+
+.header-nav {
+  height: 100px;
+  background-color: #FFF;
+  font-size: 14px;
+  display: flex;
+  padding: 20px;
+
+  .li{
+    margin-right: 20px;
+    cursor: pointer;
+  }
+}</style>

@@ -20,14 +20,16 @@
     "lodash-es": "^4.17.21",
     "mitt": "^3.0.0",
     "pinia": "^2.0.32",
+    "sass": "^1.63.6",
     "three": "^0.152.2",
     "v-scale-screen": "^2.2.0",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/lodash-es": "^4.17.7",
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.16.19",
     "@types/three": "^0.152.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.1.0",

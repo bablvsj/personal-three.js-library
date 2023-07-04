@@ -1,8 +1,8 @@
 <template>
-    <div id="SevenA" style="height: 400px;width:400px;"></div>
+    <div id="SevenA"></div>
 </template>
   
-<script lang="ts"  setup name="SevenA">
+<script lang="ts" setup name="SevenA">
 /* eslint-disable */
 // import { ref, onMounted, type Ref } from 'vue';
 // import * as THREE from 'three';
@@ -85,14 +85,14 @@ let k = width / height; //窗口宽高比
 let s = 500; //三维场景显示范围控制系数，系数越大，显示的范围越大
 
 //创建相机对象
-let camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
-camera.position.set(100, 100, 100); //设置相机位置
+let camera = new THREE.PerspectiveCamera(45, width / height, 1, 300);
+camera.position.set(100, 1, 1); //设置相机位置
 // camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
-camera.lookAt(200, 200, 200);
+camera.lookAt(10, 20, 20);
 
 //点光源
 let point = new THREE.PointLight(0xffffff, 3);
-point.position.set(100, 200, 300); //点光源位置
+point.position.set(10, 20, 30); //点光源位置
 scene.add(point); //点光源添加到场景中
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -113,23 +113,24 @@ window.addEventListener("resize", () => {
 // 立体方
 const geometry = new THREE.BoxGeometry(5, 5, 5);
 const material = new THREE.MeshStandardMaterial({
-    color: 0xff0051,
+    color: 0x000000,
     flatShading: true,
-    metalness: 0,
-    roughness: 1,
+    wireframe:true,
+    // metalness: 0,
+    // roughness: 1,
 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 // 维数据集
-const geometry2 = new THREE.BoxGeometry(30, 30, 30);
-const material2 = new THREE.MeshBasicMaterial({
-    // color: "#000",
-    wireframe: true,//是否透明
-    // transparent: false,
-});
-const wireframeCube = new THREE.Mesh(geometry2, material2);
-scene.add(wireframeCube);
+// const geometry2 = new THREE.BoxGeometry(10, 10, 10);
+// const material2 = new THREE.MeshBasicMaterial({
+//     // color: "#000",
+//     wireframe: true,//是否透明
+//     // transparent: false,
+// });
+// const wireframeCube = new THREE.Mesh(geometry2, material2);
+// scene.add(wireframeCube);
 
 renderer.setClearColor(new THREE.Color(0xe6e6e6))
 renderer.setSize(window.innerWidth, window.innerHeight)

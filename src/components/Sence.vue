@@ -18,7 +18,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import Event from '@/modules/Viewer/Events';
 import BoxHelperWrap from '@/modules/BoxHelperWrap';
-import { checkNameIncludes, findParent } from '@/utils';
+// import { checkNameIncludes, findParent } from '@/utils';
 
 import Popover from './Popover/index.vue';
 
@@ -132,7 +132,7 @@ const initModel = () => {
 
     const rackList: any[] = [];
     model.traverse(item => {
-      if (checkIsRack(item)) {
+      if (item) {
         rackList.push(item);
       }
     });
@@ -207,9 +207,9 @@ const onMouseClick = (intersects: THREE.Intersection[]) => {
   }
 };
 
-function checkIsRack (obj: any): boolean {
-  return checkNameIncludes(obj, 'rack');
-}
+// function checkIsRack (obj: any): boolean {
+//   return checkNameIncludes(obj, 'rack');
+// }
 
 const onMouseMove = (intersects: THREE.Intersection[]) => {
   if (!intersects.length) {
@@ -244,13 +244,13 @@ const onMouseMove = (intersects: THREE.Intersection[]) => {
 
   console.log(selectedObjectName, '--selectedObjectName---');
   console.log(selectedObject, '------selectedObject---------');
-  const rack = findParent(selectedObject, checkIsRack);
-  console.log(rack, '-------rack---------');
-  if (rack) {
+  // const rack = findParent(selectedObject, checkIsRack);
+  // console.log(rack, '-------rack---------');
+  // if (rack) {
     
-    boxHelperWrap.attach(rack);
-    updateRackInfo(rack.name);
-  }
+  //   boxHelperWrap.attach(rack);
+  //   updateRackInfo(rack.name);
+  // }
 
   // if (!selectedObjectName || !selectedObjectName.includes('办公楼')) {
   //   // 重置模型

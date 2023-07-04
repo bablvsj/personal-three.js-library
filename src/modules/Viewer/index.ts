@@ -113,7 +113,7 @@ export default class Viewer {
   }
 
   private initViewer() {
-    this.emitter = mitt();
+    this.emitter = mitt(); //event bus 总线传参
 
     this.initRenderer();
     this.initScene();

@@ -17,9 +17,10 @@
           <LineCharts></LineCharts>
         </Panel>
       </div> -->
-      <!-- <Sence></Sence> -->
+      <Sence></Sence>
       <!-- <FirstThree></FirstThree> -->
-      <SevenA></SevenA>
+      <!-- <SevenA></SevenA> -->
+      <SevenB></SevenB>
       
     </div>
   </div>
@@ -27,12 +28,13 @@
 
 <script setup lang="ts" name="Layout">
 // import Header from './Header.vue';
-// import Sence from '@/components/Sence.vue';
+import Sence from '@/components/Sence.vue';
 // import Panel from '@/components/Panel/index.vue';
 // import LineCharts from '@/components/Charts/LineChart.vue';
 // import PieChart from '@/components/Charts/PieChart.vue';
-import FirstThree from '@/components/FirstThree/index.vue';
-import SevenA from '@/components/SevenA.vue';
+// import FirstThree from '@/components/FirstThree/index.vue';
+// import SevenA from '@/components/SevenA.vue';
+// import SevenB from '@/components/SevenB.vue';
 </script>
 
 <style scope>
