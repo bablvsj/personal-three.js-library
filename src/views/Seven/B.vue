@@ -51,29 +51,29 @@ const init = () => {
 };
 
 const initModel = () => {
-    modelLoader.loadModelToScene('/models/zuo.glb', baseModel => {
-        console.log(baseModel, '1111111');
-        baseModel.setScalc(0.2);
-        // baseModel.object.rotation.y = Math.PI / 2;
-        const model = baseModel.gltf.scene;
-        model.position.set(0, 0, 0);
-        model.name = '机房';
-        baseModel.openCastShadow();
+    // modelLoader.loadModelToScene('/models/zuo.glb', baseModel => {
+    //     console.log(baseModel, '1111111');
+    //     baseModel.setScalc(0.2);
+    //     // baseModel.object.rotation.y = Math.PI / 2;
+    //     const model = baseModel.gltf.scene;
+    //     model.position.set(0, 0, 0);
+    //     model.name = '机房';
+    //     baseModel.openCastShadow();
 
-        dataCenter = baseModel;
-        oldDataCenter = model.clone();
+    //     dataCenter = baseModel;
+    //     oldDataCenter = model.clone();
 
-        const rackList: any[] = [];
-        model.traverse(item => {
-            if (item) {
-                rackList.push(item);
-            }
-        });
-        // console.log(rackList, 'rackList------');
+    //     const rackList: any[] = [];
+    //     model.traverse(item => {
+    //         if (item) {
+    //             rackList.push(item);
+    //         }
+    //     });
+    //     // console.log(rackList, 'rackList------');
 
-        viewer.setRaycasterObjects(rackList);
+    //     viewer.setRaycasterObjects(rackList);
 
-    });
+    // });
 };
 
 </script>

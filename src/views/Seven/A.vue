@@ -85,17 +85,18 @@ let k = width / height; //窗口宽高比
 let s = 500; //三维场景显示范围控制系数，系数越大，显示的范围越大
 
 //创建相机对象
-let camera = new THREE.PerspectiveCamera(45, width / height, 1, 300);
-camera.position.set(100, 1, 1); //设置相机位置
+let camera = new THREE.PerspectiveCamera(30, width / height, 1, 3000);
+// camera.position.set(100, 1, 1); //设置相机位置
+camera.position.set(200, 200, 200);
 // camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
-camera.lookAt(10, 20, 20);
+camera.lookAt(0, 0, 0);
 
 //点光源
 let point = new THREE.PointLight(0xffffff, 3);
 point.position.set(10, 20, 30); //点光源位置
 scene.add(point); //点光源添加到场景中
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: false });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
@@ -111,11 +112,15 @@ window.addEventListener("resize", () => {
 });
 
 // 立体方
-const geometry = new THREE.BoxGeometry(5, 5, 5);
-const material = new THREE.MeshStandardMaterial({
-    color: 0x000000,
-    flatShading: true,
-    wireframe:true,
+const geometry = new THREE.SphereGeometry(50, 50,50);
+const material = new THREE.MeshLambertMaterial({
+    // color: 0x000000,
+    // flatShading: true,
+    // wireframe:true,
+    color: 0xef83ac,
+    // shininess: 100, //高光部分的亮度，默认30
+    // specular: 0x444444, //高光部分的颜色
+    // side: THREE.FrontSide
     // metalness: 0,
     // roughness: 1,
 });
@@ -123,14 +128,15 @@ const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 // 维数据集
-// const geometry2 = new THREE.BoxGeometry(10, 10, 10);
-// const material2 = new THREE.MeshBasicMaterial({
-//     // color: "#000",
-//     wireframe: true,//是否透明
-//     // transparent: false,
-// });
-// const wireframeCube = new THREE.Mesh(geometry2, material2);
-// scene.add(wireframeCube);
+const geometry2 = new THREE.CylinderGeometry(50, 50, 50);
+const material2 = new THREE.MeshBasicMaterial({
+    // color: "#000",
+    wireframe: true,//是否透明
+    
+    // transparent: false,
+});
+const wireframeCube = new THREE.Mesh(geometry2, material2);
+scene.add(wireframeCube);
 
 renderer.setClearColor(new THREE.Color(0xe6e6e6))
 renderer.setSize(window.innerWidth, window.innerHeight)
@@ -153,6 +159,8 @@ const init = () => {
     //将渲染的结果输出到指定页面元素中
     document.getElementById("SevenA")?.appendChild(renderer.domElement);
     const controls = new OrbitControls(camera, renderer.domElement);
+    // controls.target.set(1000, 0, 1000);
+    // controls.update();//update()函数内会执行camera.lookAt(controls.targe)
     controls.addEventListener('change', () => {
         renderer.render(scene, camera);
     });//监听鼠标、键盘事件
