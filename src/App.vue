@@ -1,11 +1,12 @@
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
-  <div class="header-nav">
-    <router-link class="li" to="/home">Home</router-link>
-    <router-link class="li" to="/sevenA">SevenA</router-link>
-    <router-link class="li" to="/sevenB">SevenB</router-link>
-  </div>
+  <Nav></Nav>
   <router-view />
 </template>
+
+<script setup lang="ts">
+import Nav from '@/components/Nav.vue';
+</script>
 
 <style lang="scss">
 body,
