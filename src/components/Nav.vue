@@ -1,9 +1,6 @@
 <template>
     <div class="header-nav">
         <router-link class="li" :class="activeIndex===index?'nav-actived':''" v-for="(item, index) in navList" :to="item.url" :key="index" @click="handleClickNav(index)">{{ item.label }}</router-link>
-        <!-- <router-link class="li" to="/sevenA">SevenA</router-link>
-        <router-link class="li" to="/sevenB">SevenB</router-link>
-        <router-link class="li" to="/sevenC">SevenC</router-link> -->
     </div>
 </template>
 
@@ -15,7 +12,8 @@ const navList = [
   { label: "Home", url: "/home" },
   { label: "SevenA", url: "/sevenA" },
   { label: "SevenB", url: "/sevenB" },
-  { label: "SevenB", url: "/sevenC" },
+  { label: "SevenC", url: "/sevenC" },
+  { label: "SevenD", url: "/sevenD" },
 ];
 
 const activeIndex = ref(0);

@@ -43,9 +43,7 @@ camera.lookAt(500, 500, 500)
 const controls = new OrbitControls(camera, renderer.domElement)
 
 //网格地面
-const gridHelper = new THREE.GridHelper(80)
-//   gridHelper.material.transparent = true
-//   gridHelper.material.opacity = 0
+const gridHelper = new THREE.GridHelper(30,20)  // 网格边框长度|分成多少份|中心线颜色|其他网格线颜色0
 scene.add(gridHelper)
 
 //加载gltf模型
@@ -76,6 +74,10 @@ scene.add(light4);
 const light5 = new THREE.DirectionalLight(0xffffff, 1);
 light5.position.set(0, 10, 0);
 scene.add(light5);
+
+const light10 = new THREE.DirectionalLight(0xffffff, 1);
+light5.position.set(0, -10, 0);
+scene.add(light10);
 const light6 = new THREE.DirectionalLight(0xffffff, 0.3);
 light6.position.set(5, 10, 0);
 scene.add(light6);

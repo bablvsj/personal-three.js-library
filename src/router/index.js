@@ -50,6 +50,12 @@ export const constantRoutes = [
     component: () => import('@/views/Seven/C.vue'),
     hidden: true,
   },
+  {
+    path: '/sevenD',
+    name:"SevenD",
+    component: () => import('@/views/Seven/D.vue'),
+    hidden: true,
+  },
 ];
 
 
