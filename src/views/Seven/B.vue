@@ -5,41 +5,21 @@
 <script lang="ts" setup name="SevenF">
 /* eslint-disable */
 import { ref, onMounted } from 'vue';
-
 import Floors from '@/modules/Floors';
-
 import * as THREE from 'three';
 import gsap from 'gsap';
 import Event from '@/modules/Viewer/Events';
-
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
-
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
-
 
 //场景
 const scene = new THREE.Scene()
 
-//盒子模型 
-const geometryBox = new THREE.BoxGeometry(50, 50, 50); //默认在XOY平面上
-const textureLoader = new THREE.TextureLoader();
-const materialBox = new THREE.MeshBasicMaterial({
-    color: 0x00ff00,
-    side: THREE.FrontSide,
-});
-const mesh = new THREE.Mesh(geometryBox, materialBox);
-// scene.add(mesh)
-
-//线模型
-const geometryLine = new THREE.BoxGeometry(200, 100, 100); //默认在XOY平面上
-const materialLine = new THREE.LineBasicMaterial({ color: 0xffff00 })
-const lineMesh = new THREE.Line(geometryLine, materialLine) // 闭合线条 LineLoop   非连续线条 LineSegments
-// scene.add(lineMesh)
 
 //圆形
-const geometryCircle = new THREE.SphereGeometry(50, 0, 100)
+const geometryCircle = new THREE.SphereGeometry(30, 0, 100)
 const materialCircle = new THREE.MeshLambertMaterial({
     color: 0x016AB7,
     side: THREE.FrontSide,
@@ -47,21 +27,12 @@ const materialCircle = new THREE.MeshLambertMaterial({
     // opacity: 0.9,//设置透明度
 })
 const circleMesh = new THREE.Mesh(geometryCircle, materialCircle)
-scene.add(circleMesh)
+circleMesh.position.set(-60,20,-100)
+// scene.add(circleMesh)
 
-const v3 = new THREE.Vector3(0, 0, 0);
-v3.set(10, 0, 0)
-v3.x = 100;
-
-circleMesh.position.set(10,10,10)
 
 const axis = new THREE.Vector3(0, 1, 0);
 axis.normalize(); //向量归一化
-//沿着axis轴表示方向平移100
-circleMesh.translateOnAxis(axis, 10);
-circleMesh.scale.x = 2.0
-circleMesh.scale.set(1.5, 1.5, 2)
-
 
 //欧拉对象
 //表示绕着xyz轴分别旋转45度，0度，90度
@@ -71,24 +42,85 @@ Euler.y = Math.PI / 2;
 Euler.z = Math.PI / 4;
 circleMesh.rotateOnAxis(axis, Math.PI / 100);//绕axis轴旋转π/8
 
-// const v1 = new THREE.Vector3(4,5,6)
-// v3.copy(v1)
 
-// const circle2 = circleMesh.clone();
+//创建两个网格模型mesh1、mesh2
+const geometry = new THREE.BoxGeometry(20, 20, 20);
+const material = new THREE.MeshLambertMaterial({color: 0x8DD815});
+const group = new THREE.Group();
+const mesh1 = new THREE.Mesh(geometry, material);
+const mesh2 = new THREE.Mesh(geometry, material);
+mesh2.translateX(25);
 
-// circle2.position.x=150
-// circle2.material.color.set(0x316704)    //两个模型 颜色都会变
+group.position.set(60,10,-100)
+//把mesh1型插入到组group中，mesh1作为group的子对象
+// group.add(mesh1);
+// //把mesh2型插入到组group中，mesh2作为group的子对象
+// group.add(mesh2);
+
+group.add(circleMesh,mesh1,mesh2)
+
+//把group插入到场景中作为场景子对象
+scene.add(group);
+
+group.name ="整体模型"
+
+circleMesh.name = "圆模型"
+
+console.log(group.children)
 
 
-// circle2.material = circleMesh.material.clone() 
+const group1 = new THREE.Group(); //所有高层楼的父对象
+group1.name = "高层";
+for (let i = 0; i < 5; i++) {
+    const geometry = new THREE.BoxGeometry(20, 60, 10);
+    const material = new THREE.MeshLambertMaterial({
+        color: 0x00ffff
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.x = i * 30; // 网格模型mesh沿着x轴方向阵列
+    group1.add(mesh); //添加到组对象group1
+    mesh.name = i + 1 + '号楼';
+    // console.log('mesh.name',mesh.name);
+}
+group1.position.y = 30;
 
-// circle2.material.color.set(0x7A0717)    // 材质clone后 颜色不会跟着改变
-// scene.add(circle2)
 
-console.log(v3)
+const group2 = new THREE.Group();
+group2.name = "洋房";
+// 批量创建多个长方体表示洋房
+for (let i = 0; i < 5; i++) {
+    const geometry = new THREE.BoxGeometry(20, 30, 10);
+    const material = new THREE.MeshLambertMaterial({
+        color: 0x00ffff
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.x = i * 30;
+    group2.add(mesh); //添加到组对象group2
+    mesh.name = i + 6 + '号楼';
+}
+group2.position.z = 50;
+group2.position.y = 15;
+
+const model = new THREE.Group();
+model.name='小区房子';
+model.add(group1, group2);
+model.position.set(-50,0,-25);
+
+scene.add(group1,group2)
 
 
+group2.traverse(function(obj) {
+    console.log('obj',obj);
+    console.log('所有模型节点的名称',obj.name);
+    // obj.isMesh：if判断模型对象obj是不是网格模型'Mesh'
+    if (obj.type === 'Mesh') {//判断条件也可以是obj.type === 'Mesh'
+    console.log('所有模型节点的名称',obj.type);
+        obj.material.color.set(0xffff00);
+    }
+});
 
+const nameNode = scene.getObjectByName ("4号楼");
+nameNode.material.color.set(0xff0000);
 
 
 
@@ -150,7 +182,7 @@ const render = () => {
     // //绕y轴的角度减去60度
     // circleMesh.rotation.z -= Math.PI / 500;
 
-    circleMesh.rotateX(0.01)
+    group.rotateX(0.01)
     circleMesh.rotateY(0.01)
     circleMesh.rotateZ(0.01)
 
