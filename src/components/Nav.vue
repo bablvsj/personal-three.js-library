@@ -14,6 +14,8 @@ const navList = [
   { label: "SevenB", url: "/sevenB" },
   { label: "SevenC", url: "/sevenC" },
   { label: "SevenD", url: "/sevenD" },
+  { label: "几何体E", url: "/sevenE" },
+  { label: "模型对象F", url: "/sevenF" },
 ];
 
 const activeIndex = ref(0);

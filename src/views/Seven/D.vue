@@ -22,16 +22,36 @@ import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
 //场景
 const scene = new THREE.Scene()
 
-// 矩形平面网格模型设置背景透明的png贴图
-const geometry = new THREE.BoxGeometry(50, 50,50); //默认在XOY平面上
+
+//点模型
+const geometryPoint = new THREE.BufferGeometry(); //默认在XOY平面上
+const vertices = new Float32Array([
+    0, 0, 0, //顶点1坐标
+    50, 0, 0, //顶点2坐标
+    0, 100, 0, //顶点3坐标
+    0, 0, 10, //顶点4坐标
+    0, 0, 100, //顶点5坐标
+    50, 0, 10, //顶点6坐标
+]);
+const attribue = new THREE.BufferAttribute(vertices, 3); 
+geometryPoint.attributes.position = attribue;
+const materialA = new THREE.PointsMaterial({
+    color: 0xff0000,
+    size: 50.0 //点对象像素尺寸
+}); 
+const points = new THREE.Points(geometryPoint, materialA);
+scene.add(points)
+
+
+//盒子模型 
+ const geometryBox = new THREE.BoxGeometry(50,50,50); //默认在XOY平面上
 const textureLoader = new THREE.TextureLoader();
 const material = new THREE.MeshBasicMaterial({
     color: 0x000000,
     wireframe:true,
     transparent: true, //使用背景透明的png贴图，注意开启透明计算
 });
-const mesh = new THREE.Mesh(geometry, material);
-
+const mesh = new THREE.Mesh(geometryBox, material);
 scene.add(mesh)
 // mesh.rotateX(-Math.PI / 2);
 
@@ -59,7 +79,7 @@ loader.load(`../../../public/models/porsche_911_930_turbo.glb`, (gltf) => {  //�
     // console.log(gltf.scene);
     const bmw = gltf.scene
     bmw.scale.set(20, 20, 20); //模型缩放
-    scene.add(bmw) //将整个模型组添加到场景中
+    // scene.add(bmw) //将整个模型组添加到场景中
 })
 // 洒满灯光
 
@@ -71,26 +91,85 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
 scene.add(directionalLight);
 
 const gui = new GUI();
-gui.domElement.style.right = '0px'
-gui.domElement.style.width = '300px'
+// gui.domElement.style.right = '0px'
+// gui.domElement.style.width = '300px'
 
 const obj = {
-    color:0x00ffff
+    color:0x00ffff,
+    scale:0,
+    bool:false
 }
 
-gui.add(ambient,'intensity',0,2.0).name("环境光强度").step(0.1).onChange((value)=>{
+const commonPara = gui.addFolder('公共参数')
+commonPara.close()
+
+commonPara.add(ambient,'intensity',0,2.0).name("环境光强度").step(0.1).onChange((value)=>{
     console.log(value)
 });
-gui.add(directionalLight, 'intensity', 0, 2.0).name('平行光强度').step(0.1);;
-gui.add(mesh.position,'x',0,100).name("Mesh-x轴").step(10);
-gui.add(mesh.position,'y',0,100).name("Mesh-y轴").step(10);
-gui.add(mesh.position,'z',0,100).name("Mesh-z轴").step(10);
-gui.addColor(obj,'color').onChange((value)=>{
+commonPara.add(directionalLight, 'intensity', 0, 2.0).name('平行光强度').step(0.1);;
+
+
+
+//创建材质子菜单
+const matFolder = gui.addFolder('材质')
+matFolder.close()
+
+matFolder.addColor(obj,'color').onChange(value=>{
+    material.color.set(value)
+})
+
+matFolder.addColor(obj,'color').name("盒子颜色").onChange((value)=>{
     mesh.material.color.set(value)
 })
 
+matFolder.add(obj,'scale',[-100,-50,0,50,100]).name("y坐标").onChange((value)=>{
+    mesh.position.y = value
+})
+
+matFolder.add(mesh.position,'x',0,100).name("Mesh-x轴").step(10);
+matFolder.add(mesh.position,'y',0,100).name("Mesh-y轴").step(10);
+matFolder.add(mesh.position,'z',0,100).name("Mesh-z轴").step(10);
+matFolder.add(obj,'bool')
+
+matFolder.add(obj,'scale',{
+    left: -100,
+    center: 0,
+    right: 100,
+    左: -100,//可以用中文
+    中: 0,
+    右: 100
+}).name("x坐标").onChange((value)=>{
+    mesh.position.x = value
+})
+
+const ambientFolder = gui.addFolder('环境光')
+ambientFolder.close()
+ambientFolder.add(ambient,'intensity',0,2).step(0.1)
+
+// 平行光子菜单
+const dirFolder = gui.addFolder('平行光')
+dirFolder.close()
+dirFolder.add(directionalLight,'intensity',0,2).step(0.1)
+dirFolder.add(directionalLight.position, 'x',-400,400);
+dirFolder.add(directionalLight.position, 'y',-400,400);
+dirFolder.add(directionalLight.position, 'z',-400,400);
+
+// 平行光强度
+const dirFolder2 = dirFolder.addFolder('平行光-位置');//子菜单的子菜单
+dirFolder2.close();//关闭菜单
+// 平行光位置
+dirFolder2.add(directionalLight.position, 'x',-400,400);
+dirFolder2.add(directionalLight.position, 'y',-400,400);
+dirFolder2.add(directionalLight.position, 'z',-400,400);
+
+console.log(material)
+
+
+
+
 // 渲染函数
 const render = () => {
+    if (obj.bool) mesh.rotateY(0.11);
     renderer.render(scene, camera)
     controls.update()
     requestAnimationFrame(render)

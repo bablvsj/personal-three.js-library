@@ -1,8 +1,8 @@
 <template>
-    <div ref="canvasDom" id="sevenF" style="height: 800px;"></div>
+    <div ref="canvasDom" id="sevenE" style="height: 800px;"></div>
 </template>
   
-<script lang="ts" setup name="SevenF">
+<script lang="ts" setup name="SevenE">
 /* eslint-disable */
 import { ref, onMounted } from 'vue';
 
@@ -22,12 +22,74 @@ import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
 //场景
 const scene = new THREE.Scene()
 
+//点模型
+const geometryPoint = new THREE.BufferGeometry(); //默认在XOY平面上
+// const vertices = new Float32Array([
+//     0, 0, 0, //顶点1坐标
+//     50, 0, 0, //顶点2坐标
+//     0, 100, 0, //顶点3坐标
+//     0, 0, 10, //顶点4坐标
+//     0, 0, 100, //顶点5坐标
+//     50, 0, 10, //顶点6坐标
+// ]);
+
+const vertices = new Float32Array([
+    0, 0, 0, //顶点1坐标
+    80, 0, 0, //顶点2坐标
+    80, 80, 0, //顶点3坐标
+
+    0, 0, 0, //顶点4坐标   和顶点1位置相同
+    80, 80, 0, //顶点5坐标  和顶点3位置相同
+    0, 80, 0, //顶点6坐标
+]);
+
+const indexes = new Uint16Array([
+    // 下面索引值对应顶点位置数据中的顶点坐标
+    0, 1, 2, 0, 2, 3,
+])
+
+// const normals = new Float32Array([
+//     0, 0, 1, //顶点1法线( 法向量 )
+//     0, 0, 1, //顶点2法线
+//     0, 0, 1, //顶点3法线
+//     0, 0, 1, //顶点4法线
+//     0, 0, 1, //顶点5法线
+//     0, 0, 1, //顶点6法线
+// ]);
+
+// 矩形平面，有索引，两个三角形，有2个顶点重合，有4个顶点
+// 每个顶点的法线数据和顶点位置数据一一对应
+const normals = new Float32Array([
+    0, 0, 1, //顶点1法线( 法向量 )
+    0, 0, 1, //顶点2法线
+    0, 0, 1, //顶点3法线
+    0, 0, 1, //顶点4法线
+    0, 0, 1, //顶点5法线
+    0, 0, 1, //顶点6法线
+]);
+// 设置几何体的顶点法线属性.attributes.normal
+geometryPoint.attributes.normal = new THREE.BufferAttribute(normals, 3);
+
+const attribue = new THREE.BufferAttribute(vertices, 3);
+geometryPoint.attributes.position = attribue;
+const materialA = new THREE.PointsMaterial({
+    color: 0xff0000,
+    size: 50.0 //点对象像素尺寸
+});
+const points = new THREE.Points(geometryPoint, materialA);
+
+// geometryPoint.index = new THREE.BufferAttribute(indexes, 1);
+scene.add(points)
+
+
 //盒子模型 
 const geometryBox = new THREE.BoxGeometry(50, 50, 50); //默认在XOY平面上
 const textureLoader = new THREE.TextureLoader();
 const materialBox = new THREE.MeshBasicMaterial({
     color: 0x00ff00,
-    side: THREE.FrontSide,
+    // wireframe: true,
+    side:THREE.FrontSide,
+    // transparent: true, //使用背景透明的png贴图，注意开启透明计算
 });
 const mesh = new THREE.Mesh(geometryBox, materialBox);
 // scene.add(mesh)
@@ -39,57 +101,22 @@ const lineMesh = new THREE.Line(geometryLine, materialLine) // 闭合线条 Line
 // scene.add(lineMesh)
 
 //圆形
-const geometryCircle = new THREE.SphereGeometry(50, 0, 100)
+const geometryCircle = new THREE.SphereGeometry(50,0,100)
 const materialCircle = new THREE.MeshLambertMaterial({
-    color: 0x016AB7,
-    side: THREE.FrontSide,
-    // transparent: true,//开启透明
-    // opacity: 0.9,//设置透明度
+    color:0xff00ff,
+    side:THREE.FrontSide
+    // shininess: 20, //高光部分的亮度，默认30
+    // specular: 0x444444, //高光部分的颜色
 })
-const circleMesh = new THREE.Mesh(geometryCircle, materialCircle)
+const circleMesh = new THREE.Mesh(geometryCircle,materialCircle)
 scene.add(circleMesh)
 
-const v3 = new THREE.Vector3(0, 0, 0);
-v3.set(10, 0, 0)
-v3.x = 100;
-
-circleMesh.position.set(10,10,10)
-
-const axis = new THREE.Vector3(0, 1, 0);
-axis.normalize(); //向量归一化
-//沿着axis轴表示方向平移100
-circleMesh.translateOnAxis(axis, 10);
-circleMesh.scale.x = 2.0
-circleMesh.scale.set(1.5, 1.5, 2)
 
 
-//欧拉对象
-//表示绕着xyz轴分别旋转45度，0度，90度
-const Euler = new THREE.Euler(Math.PI / 4, 0, Math.PI / 2);
-Euler.x = Math.PI / 4;
-Euler.y = Math.PI / 2;
-Euler.z = Math.PI / 4;
-circleMesh.rotateOnAxis(axis, Math.PI / 100);//绕axis轴旋转π/8
-
-// const v1 = new THREE.Vector3(4,5,6)
-// v3.copy(v1)
-
-// const circle2 = circleMesh.clone();
-
-// circle2.position.x=150
-// circle2.material.color.set(0x316704)    //两个模型 颜色都会变
-
-
-// circle2.material = circleMesh.material.clone() 
-
-// circle2.material.color.set(0x7A0717)    // 材质clone后 颜色不会跟着改变
-// scene.add(circle2)
-
-console.log(v3)
-
-
-
-
+// const material = new THREE.MeshBasicMaterial({
+//     color:0x00ff00,
+//     side:THREE.FrontSide
+// })
 
 
 //渲染器
@@ -139,21 +166,8 @@ const light9 = new THREE.DirectionalLight(0xffffff, 0.3);
 light9.position.set(-5, 10, 0);
 scene.add(light9);
 
-
 // 渲染函数
 const render = () => {
-
-    // //绕y轴的角度设置为60度
-    // circleMesh.rotation.y += Math.PI / 1000;
-    // //绕y轴的角度增加60度
-    // circleMesh.rotation.x += Math.PI / 100;
-    // //绕y轴的角度减去60度
-    // circleMesh.rotation.z -= Math.PI / 500;
-
-    circleMesh.rotateX(0.01)
-    circleMesh.rotateY(0.01)
-    circleMesh.rotateZ(0.01)
-
     renderer.render(scene, camera)
     controls.update()
     requestAnimationFrame(render)
@@ -161,7 +175,7 @@ const render = () => {
 
 onMounted(() => {
     //渲染
-    document.getElementById("sevenF")?.appendChild(renderer.domElement);
+    document.getElementById("sevenE")?.appendChild(renderer.domElement);
     // 设置背景颜色并启用透明度
     renderer.setClearColor(0xffc0cb, 0.5);
     render()

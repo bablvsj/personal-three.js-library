@@ -41,7 +41,7 @@ const lineMesh = new THREE.Line(geometryLine, materialLine) // 闭合线条 Line
 //圆形
 const geometryCircle = new THREE.SphereGeometry(50, 0, 100)
 const materialCircle = new THREE.MeshLambertMaterial({
-    color: 0x016AB7,
+    color: 0x004B93,
     side: THREE.FrontSide,
     // transparent: true,//开启透明
     // opacity: 0.9,//设置透明度
@@ -71,19 +71,19 @@ Euler.y = Math.PI / 2;
 Euler.z = Math.PI / 4;
 circleMesh.rotateOnAxis(axis, Math.PI / 100);//绕axis轴旋转π/8
 
-// const v1 = new THREE.Vector3(4,5,6)
-// v3.copy(v1)
+const v1 = new THREE.Vector3(4,5,6)
+v3.copy(v1)
 
-// const circle2 = circleMesh.clone();
+const circle2 = circleMesh.clone();
 
-// circle2.position.x=150
-// circle2.material.color.set(0x316704)    //两个模型 颜色都会变
+circle2.position.x=150
+circle2.material.color.set(0x316704)    //两个模型 颜色都会变
 
 
-// circle2.material = circleMesh.material.clone() 
+circle2.material = circleMesh.material.clone() 
 
-// circle2.material.color.set(0x7A0717)    // 材质clone后 颜色不会跟着改变
-// scene.add(circle2)
+circle2.material.color.set(0x7A0717)    // 材质clone后 颜色不会跟着改变
+scene.add(circle2)
 
 console.log(v3)
 
@@ -153,6 +153,15 @@ const render = () => {
     circleMesh.rotateX(0.01)
     circleMesh.rotateY(0.01)
     circleMesh.rotateZ(0.01)
+
+
+    circle2.rotation.copy(circleMesh.rotation) // 同步mesh2和mesh的姿态角度一样，不管mesh姿态角度怎么变化，mesh2始终保持同步
+
+
+    circle2.position.copy(circleMesh.position);//1. 第1步位置重合
+    circle2.position.y += 100;//1. 第2步mesh在原来y的基础上增加100
+
+
 
     renderer.render(scene, camera)
     controls.update()
