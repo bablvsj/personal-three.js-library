@@ -1,176 +1,246 @@
 <template>
-    <div id="SevenA"></div>
+    <div ref="canvasDom" id="sevenA" style="height: 800px;"></div>
 </template>
   
 <script lang="ts" setup name="SevenA">
 /* eslint-disable */
-// import { ref, onMounted, type Ref } from 'vue';
-// import * as THREE from 'three';
-
-// let width = window.innerWidth; //窗口宽度
-// let height = window.innerHeight; //窗口高度
-
-
-// const container = document.getElementById("#sevenA")
-
-// const scene = new THREE.Scene();
-// const axesHelper = new THREE.AxesHelper(200);
-// scene.background = new THREE.Color('skyblue')
-// scene.add(axesHelper);
-
-
-// const fov = 35;
-// const aspect = width / height
-
-// const camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 100)
-// camera.position.set(0, 0, 10)
-// camera.lookAt(200, 200, 200);
-
-// const geometry = new THREE.BoxGeometry(20, 20, 20)
-
-// const material = new THREE.MeshStandardMaterial({
-//     color: 0xff0051,
-//     flatShading: true,
-//     metalness: 0,
-//     roughness: 1,
-// });
-// const cube = new THREE.Mesh(geometry, material)
-
-// scene.add(cube)
-
-// const renderer = new THREE.WebGLRenderer({ antialias: true })
-// renderer.setSize(window.innerWidth, window.innerHeight)
-// renderer.setPixelRatio(window.devicePixelRatio)
-
-// onMounted(() => {
-//     container?.append(renderer.domElement)
-//     render()
-// })
-
-// const render = () => {
-//     //requestAnimationFrame循环调用的函数中调用方法update(),来刷新时间
-//     renderer.render(scene, camera); //执行渲染操作
-//     requestAnimationFrame(render); //请求再次执行渲染函数render，渲染下一帧
-// }
-
-
-import { ref, onMounted, type Ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import Floors from '@/modules/Floors';
 import * as THREE from 'three';
-import type { BufferGeometryLoader } from 'three';
-import type { PositionalAudio } from 'three';
-import type { Camera } from 'three';
-import { RGBA_ASTC_10x10_Format } from 'three';
-import { PerspectiveCamera } from 'three';
-
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import gsap from 'gsap';
+import Event from '@/modules/Viewer/Events';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
-import { DRACOLoader, } from "three/examples/jsm/loaders/DRACOLoader"
-import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+// import { TextureLoader } from 'three/examples/jsm/loaders/TextureLoader';
+import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
 
 
-let container, clock, gui: any, mixer: any, actions: any, activeAction: any, previousAction;
-let model, face;
+const scene = new THREE.Scene()  //场景
 
-const api = { state: 'Walking' };
 
-let scene = new THREE.Scene();
-const axesHelper = new THREE.AxesHelper(200);
-scene.add(axesHelper);
-scene.background = new THREE.Color('skyblue')
+//纹理内容块
+const textLoader = new THREE.TextureLoader();  // 文件加载器
 
-let width = window.innerWidth; //窗口宽度
-let height = window.innerHeight; //窗口高度
-let k = width / height; //窗口宽高比
-let s = 500; //三维场景显示范围控制系数，系数越大，显示的范围越大
+const wlRed = new URL('@/assets/images/textTure/wenli_red.jpg', import.meta.url).href
+const wlImg1 = new URL('@/assets/images/textTure/wenli_gray.jpg', import.meta.url).href
+const wlImg2 = new URL('@/assets/images/textTure/wenli2.jpg', import.meta.url).href
+const wlImg3 = new URL('@/assets/images/textTure/wenli3.jpg', import.meta.url).href
+const ttRed = textLoader.load(wlRed)
+const texture1 = textLoader.load(wlImg1)
+const texture2 = textLoader.load(wlImg2)
+const texture3 = textLoader.load(wlImg3)
+texture2.wrapS = THREE.RepeatWrapping;
+texture2.wrapT = THREE.RepeatWrapping;
+texture2.repeat.set(1, 1);  // uv两个方向纹理重复数量
 
-//创建相机对象
-let camera = new THREE.PerspectiveCamera(30, width / height, 1, 3000);
-// camera.position.set(100, 1, 1); //设置相机位置
-camera.position.set(200, 200, 200);
-// camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
-camera.lookAt(0, 0, 0);
 
-//点光源
-let point = new THREE.PointLight(0xffffff, 3);
-point.position.set(10, 20, 30); //点光源位置
-scene.add(point); //点光源添加到场景中
+const geometryCircle = new THREE.SphereGeometry(20, 32, 16)   //圆形
+const materialCircle = new THREE.MeshBasicMaterial({
+    // color: 0x016AB7,
+    // side: THREE.FrontSide,
+    // side:THREE.DoubleSide,
+    // map:texture
+    // transparent: true,//开启透明
+    // opacity: 0.9,//设置透明度
+})
 
-const renderer = new THREE.WebGLRenderer({ antialias: false });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-document.body.appendChild(renderer.domElement);
-camera.position.z = 5;
+const circleMesh = new THREE.Mesh(geometryCircle, materialCircle)
+circleMesh.name = "圆模型"
+circleMesh.position.set(-150, 20, -20)
 
-// resize 事件
-window.addEventListener("resize", () => {
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    renderer.setSize(width, height);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+
+const geometryPlane = new THREE.PlaneGeometry(1000, 1000);
+//纹理贴图加载器TextureLoader
+const texLoader = new THREE.TextureLoader();
+// .load()方法加载图像，返回一个纹理对象Texture
+
+const materialPlane = new THREE.MeshBasicMaterial({
+    // 设置纹理贴图：Texture对象作为材质map属性的属性值
+    side:THREE.DoubleSide,
+    // transparent: true
+});
+const meshPlane = new THREE.Mesh(geometryPlane, materialPlane);
+
+
+const geometry = new THREE.BoxGeometry(20, 120, 20);
+const material = new THREE.MeshLambertMaterial();
+
+const group = new THREE.Group();
+group.name = "整体模型"
+
+const mesh1 = new THREE.Mesh(geometry, material);
+mesh1.name = "mesh1"
+const mesh2 = mesh1.clone()
+mesh2.material = mesh1.material.clone()
+mesh2.name = "mesh2"
+mesh2.translateX(50);
+group.add(mesh1, mesh2, circleMesh)
+group.position.set(0, 60, -80)
+scene.add(group,meshPlane)
+
+circleMesh.material.map = texture1
+mesh1.material.map = texture2
+mesh2.material.map = ttRed
+meshPlane.material.map = ttRed
+
+
+ttRed.wrapS = THREE.RepeatWrapping;
+ttRed.wrapT = THREE.RepeatWrapping;
+ttRed.repeat.x=50
+ttRed.repeat.y=50
+// uv两个方向纹理重复数量
+ttRed.repeat.set(1,1);
+
+const axis = new THREE.AxesHelper(1000)
+
+scene.add(axis)
+
+/**纹理坐标0~1之间随意定义*/
+const uvs = new Float32Array([
+    0, 0, 
+    0.5, 0, 
+    0.5, 0.5, 
+    0, 0.5, 
+]);
+// 设置几何体attributes属性的位置normal属性
+// geometry.attributes.uv = new THREE.BufferAttribute(uvs, 2); //2个为一组,表示一个顶点的纹理坐标
+
+
+meshPlane.rotateX(-Math.PI/2);
+
+const gridHelper = new THREE.GridHelper(1000, 25, 0x004444, 0x004444);
+gridHelper.position.y = 10
+
+scene.add(gridHelper)
+
+
+const group1 = new THREE.Group(); //所有高层楼的父对象
+group1.name = "高层";
+for (let i = 0; i < 5; i++) {
+    const geometry = new THREE.BoxGeometry(20, 40, 10);
+    const material = new THREE.MeshStandardMaterial({
+        color: 0x0160B7
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.x = i * 30; // 网格模型mesh沿着x轴方向阵列
+    group1.add(mesh); //添加到组对象group1
+    mesh.name = i + 1 + '号楼';
+    // console.log('mesh.name',mesh.name);
+}
+group1.position.set(-30, 20, 0);
+
+
+const group2 = new THREE.Group();
+group2.name = "洋房";
+// 批量创建多个长方体表示洋房
+for (let i = 0; i < 5; i++) {
+    const geometry = new THREE.BoxGeometry(20, 20, 10);
+    const material = new THREE.MeshStandardMaterial({
+        color: 0x0180DB
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.x = i * 30;
+    group2.add(mesh); //添加到组对象group2
+    mesh.name = i + 6 + '号楼';
+}
+group2.position.set(-30, 10, 50);
+
+const model = new THREE.Group();
+model.name = '小区房子';
+model.add(group1, group2);
+model.position.set(-50, 0, -25);
+
+
+scene.add(group1, group2)
+group2.traverse(function (obj) {
+    if (obj.type === 'Mesh') {//判断条件也可以是obj.type === 'Mesh'
+        // obj.material.color.set(0xffff00);
+    }
 });
 
-// 立体方
-const geometry = new THREE.SphereGeometry(50, 50,50);
-const material = new THREE.MeshLambertMaterial({
-    // color: 0x000000,
-    // flatShading: true,
-    // wireframe:true,
-    color: 0xef83ac,
-    // shininess: 100, //高光部分的亮度，默认30
-    // specular: 0x444444, //高光部分的颜色
-    // side: THREE.FrontSide
-    // metalness: 0,
-    // roughness: 1,
-});
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const nameNode = scene.getObjectByName ("4号楼");
+const mesh1Name = scene.getObjectByName ("mesh1");
+const mesh2Name = scene.getObjectByName ("mesh2");
+nameNode.material.color.set(0xff0000);
+mesh1Name.material.color.set(0x419010);
+mesh2Name.material.color.set(0xFFC5AE);
 
-// 维数据集
-const geometry2 = new THREE.CylinderGeometry(50, 50, 50);
-const material2 = new THREE.MeshBasicMaterial({
-    // color: "#000",
-    wireframe: true,//是否透明
-    
-    // transparent: false,
-});
-const wireframeCube = new THREE.Mesh(geometry2, material2);
-scene.add(wireframeCube);
 
-renderer.setClearColor(new THREE.Color(0xe6e6e6))
+
+//渲染器
+const renderer = new THREE.WebGLRenderer({ antialias: false })  //setAlpha让其可设置透明度
 renderer.setSize(window.innerWidth, window.innerHeight)
+//镜头
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 3000)
+camera.position.set(100, 1400, 100)    //镜头视角点设置
+camera.lookAt(0, 0, 0)
+const controls = new OrbitControls(camera, renderer.domElement)
 
-// 环境光
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-scene.add(ambientLight);
+//网格地面
+// const gridHelper = new THREE.GridHelper(200, 20)
+// scene.add(gridHelper)
 
-// 点光源
-const pointLight = new THREE.PointLight(0xffffff, 1);
-pointLight.position.set(25, 50, 25);
-scene.add(pointLight);
+//洒满灯光
+const light = new THREE.DirectionalLight(0xffffff, 1)
+light.position.set(0, 0, 100)
+scene.add(light)
+const light2 = new THREE.DirectionalLight(0xffffff, 1);
+light2.position.set(0, 0, -100);
+scene.add(light2);
+const light3 = new THREE.DirectionalLight(0xffffff, 1);
+light3.position.set(100, 0, 0);
+scene.add(light3);
+const light4 = new THREE.DirectionalLight(0xffffff, 1);
+light4.position.set(-100, 0, 0);
+scene.add(light4);
+const light5 = new THREE.DirectionalLight(0xffffff, 1);
+light5.position.set(0, 100, 0);
+scene.add(light5);
+const light6 = new THREE.DirectionalLight(0xffffff, 0.3);
+light6.position.set(50, 100, 0);
+scene.add(light6);
+const light7 = new THREE.DirectionalLight(0xffffff, 0.3);
+light7.position.set(0, 100, 50);
+scene.add(light7);
+const light8 = new THREE.DirectionalLight(0xffffff, 0.3);
+light8.position.set(0, 100, -50);
+scene.add(light8);
+const light9 = new THREE.DirectionalLight(0xffffff, 0.3);
+light9.position.set(-50, 100, 0);
+scene.add(light9);
+const light10 = new THREE.DirectionalLight(0xffffff, 1);
+light5.position.set(0, -100, 0);
+scene.add(light10);
+
+// const lightHelper = new THREE.DirectionalLightHelper(light3, 5, 0xffffff)
+
+
+// 渲染函数
+const render = () => {
+    ttRed.offset.x -=0.0005
+    // ttRed.offset.y -=0.0005
+    circleMesh.rotateY(0.01)
+    renderer.render(scene, camera)
+    controls.update()
+    requestAnimationFrame(render)
+}
 
 onMounted(() => {
-    init();
-});
+    //渲染
+    document.getElementById("sevenA")?.appendChild(renderer.domElement);
 
-
-const init = () => {
-    //将渲染的结果输出到指定页面元素中
-    document.getElementById("SevenA")?.appendChild(renderer.domElement);
-    const controls = new OrbitControls(camera, renderer.domElement);
-    // controls.target.set(1000, 0, 1000);
-    // controls.update();//update()函数内会执行camera.lookAt(controls.targe)
-    controls.addEventListener('change', () => {
-        renderer.render(scene, camera);
-    });//监听鼠标、键盘事件
-    //渲染场景
+    // 设置背景颜色并启用透明度
+    renderer.setClearColor(0xffc0cb, 0.5);
     render()
-};
 
-const render = () => {
-    renderer.render(scene, camera); //执行渲染操作
-    requestAnimationFrame(render); //请求再次执行渲染函数render，渲染下一帧
-}
+})
 </script>
+  
+<style scoped>
+#three {
+    height: 100%;
+    width: 100%;
+}
+</style>
   

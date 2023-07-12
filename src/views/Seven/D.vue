@@ -4,7 +4,7 @@
   
 <script lang="ts" setup name="SevenD">
 /* eslint-disable */
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,onBeforeUnmount } from 'vue';
 
 import Floors from '@/modules/Floors';
 
@@ -91,8 +91,9 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
 scene.add(directionalLight);
 
 const gui = new GUI();
-// gui.domElement.style.right = '0px'
-// gui.domElement.style.width = '300px'
+gui.domElement.style.right = '0px'
+// gui.domElement.style.bottom = '0px'
+gui.domElement.style.width = '300px'
 
 const obj = {
     color:0x00ffff,
@@ -183,8 +184,12 @@ onMounted(() => {
     // 设置背景颜色并启用透明度
     renderer.setClearColor(0xffc0cb, 0.5);
     render()
-
 })
+
+onBeforeUnmount(() => {
+    gui.close()
+})
+
 </script>
   
 <style scoped>

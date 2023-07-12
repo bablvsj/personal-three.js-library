@@ -10,12 +10,14 @@ import { ref } from 'vue';
 
 const navList = [
   { label: "Home", url: "/home" },
-  { label: "SevenA", url: "/sevenA" },
-  { label: "层级模型B", url: "/sevenB" },
+ 
+ 
   { label: "SevenC", url: "/sevenC" },
   { label: "SevenD", url: "/sevenD" },
   { label: "几何体E", url: "/sevenE" },
   { label: "模型对象F", url: "/sevenF" },
+  { label: "层级模型B", url: "/sevenB" },
+  { label: "纹理贴图A", url: "/sevenA" },
 ];
 
 const activeIndex = ref(0);
