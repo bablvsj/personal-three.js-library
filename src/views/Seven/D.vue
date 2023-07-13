@@ -53,10 +53,7 @@ const material = new THREE.MeshBasicMaterial({
 });
 const mesh = new THREE.Mesh(geometryBox, material);
 scene.add(mesh)
-// mesh.rotateX(-Math.PI / 2);
 
-//渲染器
-// , setAlpha: true
 const renderer = new THREE.WebGLRenderer({ antialias: true })  //setAlpha让其可设置透明度
 renderer.setSize(window.innerWidth, window.innerHeight)
 //镜头
@@ -69,20 +66,6 @@ const controls = new OrbitControls(camera, renderer.domElement)
 const gridHelper = new THREE.GridHelper(200, 20)
 scene.add(gridHelper)
 
-//加载gltf模型
-const loader = new GLTFLoader()
-const dracoLoader = new DRACOLoader()
-  dracoLoader.setDecoderPath('../../../public/models/')
-loader.setDRACOLoader(dracoLoader)
-
-loader.load(`../../../public/models/porsche_911_930_turbo.glb`, (gltf) => {  //传id让其点击不同商品展示不同模型 id对应商品的id
-    // console.log(gltf.scene);
-    const bmw = gltf.scene
-    bmw.scale.set(20, 20, 20); //模型缩放
-    // scene.add(bmw) //将整个模型组添加到场景中
-})
-// 洒满灯光
-
 
 
 const ambient = new THREE.AmbientLight(0xffffff, 2);
@@ -90,10 +73,10 @@ scene.add(ambient);
 const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
 scene.add(directionalLight);
 
-const gui = new GUI();
-gui.domElement.style.right = '0px'
-// gui.domElement.style.bottom = '0px'
-gui.domElement.style.width = '300px'
+// const gui = new GUI();
+// gui.domElement.style.right = '0px'
+// // gui.domElement.style.bottom = '0px'
+// gui.domElement.style.width = '300px'
 
 const obj = {
     color:0x00ffff,
@@ -101,69 +84,68 @@ const obj = {
     bool:false
 }
 
-const commonPara = gui.addFolder('公共参数')
-commonPara.close()
+// const commonPara = gui.addFolder('公共参数')
+// commonPara.close()
 
-commonPara.add(ambient,'intensity',0,2.0).name("环境光强度").step(0.1).onChange((value)=>{
-    console.log(value)
-});
-commonPara.add(directionalLight, 'intensity', 0, 2.0).name('平行光强度').step(0.1);;
+// commonPara.add(ambient,'intensity',0,2.0).name("环境光强度").step(0.1).onChange((value)=>{
+//     console.log(value)
+// });
+// commonPara.add(directionalLight, 'intensity', 0, 2.0).name('平行光强度').step(0.1);;
 
 
 
 //创建材质子菜单
-const matFolder = gui.addFolder('材质')
-matFolder.close()
+// const matFolder = gui.addFolder('材质')
+// matFolder.close()
 
-matFolder.addColor(obj,'color').onChange(value=>{
-    material.color.set(value)
-})
+// matFolder.addColor(obj,'color').onChange(value=>{
+//     material.color.set(value)
+// })
 
-matFolder.addColor(obj,'color').name("盒子颜色").onChange((value)=>{
-    mesh.material.color.set(value)
-})
+// matFolder.addColor(obj,'color').name("盒子颜色").onChange((value)=>{
+//     mesh.material.color.set(value)
+// })
 
-matFolder.add(obj,'scale',[-100,-50,0,50,100]).name("y坐标").onChange((value)=>{
-    mesh.position.y = value
-})
+// matFolder.add(obj,'scale',[-100,-50,0,50,100]).name("y坐标").onChange((value)=>{
+//     mesh.position.y = value
+// })
 
-matFolder.add(mesh.position,'x',0,100).name("Mesh-x轴").step(10);
-matFolder.add(mesh.position,'y',0,100).name("Mesh-y轴").step(10);
-matFolder.add(mesh.position,'z',0,100).name("Mesh-z轴").step(10);
-matFolder.add(obj,'bool')
+// matFolder.add(mesh.position,'x',0,100).name("Mesh-x轴").step(10);
+// matFolder.add(mesh.position,'y',0,100).name("Mesh-y轴").step(10);
+// matFolder.add(mesh.position,'z',0,100).name("Mesh-z轴").step(10);
+// matFolder.add(obj,'bool')
 
-matFolder.add(obj,'scale',{
-    left: -100,
-    center: 0,
-    right: 100,
-    左: -100,//可以用中文
-    中: 0,
-    右: 100
-}).name("x坐标").onChange((value)=>{
-    mesh.position.x = value
-})
+// matFolder.add(obj,'scale',{
+//     left: -100,
+//     center: 0,
+//     right: 100,
+//     左: -100,//可以用中文
+//     中: 0,
+//     右: 100
+// }).name("x坐标").onChange((value)=>{
+//     mesh.position.x = value
+// })
 
-const ambientFolder = gui.addFolder('环境光')
-ambientFolder.close()
-ambientFolder.add(ambient,'intensity',0,2).step(0.1)
+// const ambientFolder = gui.addFolder('环境光')
+// ambientFolder.close()
+// ambientFolder.add(ambient,'intensity',0,2).step(0.1)
 
-// 平行光子菜单
-const dirFolder = gui.addFolder('平行光')
-dirFolder.close()
-dirFolder.add(directionalLight,'intensity',0,2).step(0.1)
-dirFolder.add(directionalLight.position, 'x',-400,400);
-dirFolder.add(directionalLight.position, 'y',-400,400);
-dirFolder.add(directionalLight.position, 'z',-400,400);
+// // 平行光子菜单
+// const dirFolder = gui.addFolder('平行光')
+// dirFolder.close()
+// dirFolder.add(directionalLight,'intensity',0,2).step(0.1)
+// dirFolder.add(directionalLight.position, 'x',-400,400);
+// dirFolder.add(directionalLight.position, 'y',-400,400);
+// dirFolder.add(directionalLight.position, 'z',-400,400);
 
 // 平行光强度
-const dirFolder2 = dirFolder.addFolder('平行光-位置');//子菜单的子菜单
-dirFolder2.close();//关闭菜单
-// 平行光位置
-dirFolder2.add(directionalLight.position, 'x',-400,400);
-dirFolder2.add(directionalLight.position, 'y',-400,400);
-dirFolder2.add(directionalLight.position, 'z',-400,400);
+// const dirFolder2 = dirFolder.addFolder('平行光-位置');//子菜单的子菜单
+// dirFolder2.close();//关闭菜单
+// // 平行光位置
+// dirFolder2.add(directionalLight.position, 'x',-400,400);
+// dirFolder2.add(directionalLight.position, 'y',-400,400);
+// dirFolder2.add(directionalLight.position, 'z',-400,400);
 
-console.log(material)
 
 
 
@@ -187,7 +169,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-    gui.close()
+    // gui.close()
 })
 
 </script>

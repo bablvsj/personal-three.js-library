@@ -67,7 +67,7 @@ loader.load(`../../../public/models/porsche_911_930_turbo.glb`, (gltf) => {  //�
     console.log(gltf);
     const bmw = gltf.scene
     const mesh = gltf.scene.children[0]; //获取Mesh
-    console.log(mesh)
+    console.log(bmw)
     // mesh.material.map = ttRed; //更换不同风格的颜色贴图
     // gltf.scene.traverse(function (obj) {
     //     if (obj.isMesh) {

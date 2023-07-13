@@ -20,6 +20,7 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias,
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
   },
   base: './',
   server: {

@@ -1,7 +1,11 @@
 <template>
   <div class="header-nav">
     <router-link class="li" :class="activeIndex === index ? 'nav-actived' : ''" v-for="(item, index) in navList"
-      :to="item.url" :key="index" @click="handleClickNav(index)">{{ item.label }}</router-link>
+      :to="item.url" :key="index" @click="handleClickNav(index)">{{ item.label }}
+      <p class="nav-desc" v-if="activeIndex === index">{{ item.desc || '' }}</p>
+    </router-link>
+    
+      
   </div>
 </template>
 
@@ -12,13 +16,13 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const navList = [
-  { label: "Home", url: "/home" },
-  { label: "几何体E", url: "/sevenE" },
-  { label: "模型对象F", url: "/sevenF" },
-  { label: "层级模型B", url: "/sevenB" },
-  { label: "纹理贴图A", url: "/sevenA" },
-  { label: "GLTF C", url: "/sevenC" },
-  { label: "Gui D", url: "/sevenD" },
+  { label: "Home", url: "/home" ,desc:"2222222222"},
+  { label: "模型对象F", url: "/sevenF",desc:"2222222222" },
+  { label: "层级模型B", url: "/sevenB",desc:"2222222222" },
+  { label: "纹理贴图A", url: "/sevenA" ,desc:"2222222222"},
+  { label: "GLTF C", url: "/sevenC" ,desc:"2222222222"},
+  { label: "Gui D", url: "/sevenD" ,desc:"2222222222"},
+  { label: "渲染器和前端UI E", url: "/sevenE", desc: "canvas导出图片、模型进度条、渲染部分配置" },
 ];
 
 const activeIndex = ref(0);
@@ -41,6 +45,7 @@ watch(() => router.currentRoute.value.path, (toPath) => {
   display: flex;
   flex-wrap: wrap;
   padding: 20px;
+  position: relative;
 
   .li {
     margin-right: 20px;
@@ -49,6 +54,17 @@ watch(() => router.currentRoute.value.path, (toPath) => {
 
   .nav-actived {
     color: pink;
+  }
+
+  .nav-desc{
+    position: absolute;
+    width: 100%;
+    left:0;
+    bottom: -20px;
+    text-align: left;
+    padding:  0 20px;
+    color:#000;
+    z-index: 999;
   }
 }
 </style>
