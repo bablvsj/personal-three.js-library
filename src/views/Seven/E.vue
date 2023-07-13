@@ -1,7 +1,7 @@
 <template>
     <div style="position: relative;">
         <div ref="canvasDom" id="sevenE" style="height: 800px;z-index:1 ;position: relative;"></div>
-        <div style="position: absolute;z-index:999;top:0;right: 0;cursor: pointer;" @click="exportCanvas">导出</div>
+        <div style="position: absolute;z-index:999;top:0;right: 0;cursor: pointer;font-size: 20px;margin:0 20px;" @click="exportCanvas">导出</div>
     </div>
 </template>
   

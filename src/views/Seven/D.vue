@@ -37,13 +37,13 @@ const attribue = new THREE.BufferAttribute(vertices, 3);
 geometryPoint.attributes.position = attribue;
 const materialA = new THREE.PointsMaterial({
     color: 0xff0000,
-    size: 50.0 //点对象像素尺寸
+    size: 5.0 //点对象像素尺寸
 }); 
 const points = new THREE.Points(geometryPoint, materialA);
 
 const lineMaterial = new THREE.LineBasicMaterial({color:0xff0000})
 
-const line = new THREE.LineLoop(geometryPoint,lineMaterial)
+const line = new THREE.LineSegments(geometryPoint,lineMaterial)
 
 scene.add(points,line)
 
@@ -70,6 +70,7 @@ const controls = new OrbitControls(camera, renderer.domElement)
 
 //网格地面
 const gridHelper = new THREE.GridHelper(200, 20)
+gridHelper.position.x = -1
 scene.add(gridHelper)
 
 

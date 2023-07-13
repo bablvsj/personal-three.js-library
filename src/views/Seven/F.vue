@@ -19,13 +19,14 @@ const scene = new THREE.Scene()
 
 
 //圆形
-const geometryCircle = new THREE.BoxGeometry(200, 200, 200)
+const geometryCircle = new THREE.SphereGeometry(100, 32, 16)
 const materialCircle = new THREE.MeshPhysicalMaterial({
     color: 0x102693,
     // metalness: 1.0,//金属度属性
     // side: THREE.FrontSide,
     metalness: 0,   //金属度属性
     roughness: 0,
+    wireframe:true,
     // transparent: true,//开启透明
     // opacity: 0.9,//设置透明度
 })
@@ -38,7 +39,7 @@ const axis = new THREE.Vector3(0, 1, 0);
 axis.normalize(); //向量归一化
 //沿着axis轴表示方向平移100
 circleMesh.translateOnAxis(axis, 10);
-circleMesh.scale.set(1.5, 1.5, 2)
+// circleMesh.scale.set(1.5, 1.5, 2)
 
 const wlRed = new URL('@/assets/images/textTure/wenli_red.jpg', import.meta.url).href
 const wlImg1 = new URL('@/assets/images/textTure/wenli_gray.jpg', import.meta.url).href
@@ -46,7 +47,6 @@ const wlImg2 = new URL('@/assets/images/textTure/wenli2.jpg', import.meta.url).h
 const wlImg3 = new URL('@/assets/images/textTure/wenli3.jpg', import.meta.url).href
 
 const textureCube = new THREE.CubeTextureLoader().load([wlRed, wlRed, wlImg1, wlImg1, wlImg2, wlImg2]);
-circleMesh.material.envMap = textureCube
 
 
 const Euler = new THREE.Euler(Math.PI / 4, 0, Math.PI / 2);
@@ -59,11 +59,16 @@ circleMesh.material = new THREE.MeshPhysicalMaterial({
     color: circleMesh.material.color, //默认颜色
     metalness: 0,//车外壳金属度
     roughness: 0,//车外壳粗糙度
-    envMap: textureCube, //环境贴图
+    // envMap: textureCube, //环境贴图
     transmission: 1,
     envMapIntensity: 2.5, //环境贴图对Mesh表面影响程度
     ior: 1.5,//折射率
+    wireframe:true,
 })
+
+
+// circleMesh.material.envMap = textureCube
+
 
 // const gui = new GUI()
 // const matFolder = gui.addFolder('公共参数')
