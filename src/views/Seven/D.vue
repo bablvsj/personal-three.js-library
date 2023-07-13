@@ -40,7 +40,13 @@ const materialA = new THREE.PointsMaterial({
     size: 50.0 //点对象像素尺寸
 }); 
 const points = new THREE.Points(geometryPoint, materialA);
-scene.add(points)
+
+const lineMaterial = new THREE.LineBasicMaterial({color:0xff0000})
+
+const line = new THREE.LineLoop(geometryPoint,lineMaterial)
+
+scene.add(points,line)
+
 
 
 //盒子模型 
