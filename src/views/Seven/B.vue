@@ -57,7 +57,7 @@ scene.add(group);
 group.name ="整体模型"
 circleMesh.name = "圆模型"
 
-console.log(group.children)
+// console.log(group.children)
 
 const group1 = new THREE.Group(); //所有高层楼的父对象
 group1.name = "高层";
@@ -70,7 +70,7 @@ for (let i = 0; i < 5; i++) {
     mesh.position.x = i * 30; // 网格模型mesh沿着x轴方向阵列
     group1.add(mesh); //添加到组对象group1
     mesh.name = i + 1 + '号楼';
-    // console.log('mesh.name',mesh.name);
+    // // console.log('mesh.name',mesh.name);
 }
 group1.position.set(-30,45,-100);
 
@@ -99,12 +99,12 @@ model.position.set(-50,0,-25);
 scene.add(group1,group2)
 group2.traverse(function(obj) {
 
-    // console.log(group2.getWorldPosition(obj))
-    console.log('obj',obj);
-    console.log('所有模型节点的名称',obj.name);
+    // // console.log(group2.getWorldPosition(obj))
+    // console.log('obj',obj);
+    // console.log('所有模型节点的名称',obj.name);
     // obj.isMesh：if判断模型对象obj是不是网格模型'Mesh'
     if (obj.type === 'Mesh') {//判断条件也可以是obj.type === 'Mesh'
-    console.log('所有模型节点的名称',obj.type);
+    // console.log('所有模型节点的名称',obj.type);
         // obj.material.color.set(0xffff00);
     }
 });
@@ -121,8 +121,8 @@ mesh2Name.material.color.set(0xFFC5AE);
 const worldPosition = new THREE.Vector3();
 // 获取mesh的世界坐标，你会发现mesh的世界坐标受到父对象group的.position影响
 mesh1.getWorldPosition(worldPosition);
-console.log('世界坐标',worldPosition);
-console.log('本地坐标',mesh1.position);
+// console.log('世界坐标',worldPosition);
+// console.log('本地坐标',mesh1.position);
 
 
 

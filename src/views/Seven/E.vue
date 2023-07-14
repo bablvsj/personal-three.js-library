@@ -184,17 +184,17 @@ const initModel = () => {
     const loader = new GLTFLoader()
 
     loader.load(`../../../public/models/porsche_911_930_turbo.glb`, (gltf) => {  //传id让其点击不同商品展示不同模型 id对应商品的id
-        console.log(gltf);
+        // console.log(gltf);
         const bmw = gltf.scene
         const mesh = gltf.scene.children[0]; //获取Mesh
-        console.log(mesh)
+        // console.log(mesh)
         bmw.scale.set(20, 20, 20); //模型缩放
         scene.add(bmw) //将整个模型组添加到场景中
     }, (xhr) => {
         const percent = xhr.loaded / xhr.total;
 
         if(percent==1) closeProgress()
-        console.log('加载进度' + percent);
+        // console.log('加载进度' + percent);
     })
 }
 

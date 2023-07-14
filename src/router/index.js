@@ -27,6 +27,10 @@ import { createWebHashHistory, createRouter } from 'vue-router';
 // 公共路由
 export const constantRoutes = [
   {
+    path: '/',
+    redirect:"/home",
+  },
+  {
     path: '/home',
     name:"SystemHome",
     component: () => import('@/views/system/home.vue'),

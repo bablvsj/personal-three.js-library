@@ -37,7 +37,7 @@ onMounted(() => {
     initModel();
 
     viewer.scene.traverse((item: THREE.Object3D) => {
-        console.log(item, '0000000000');
+        // console.log(item, '0000000000');
     });
 });
 
@@ -65,7 +65,7 @@ const init = () => {
 
 const initModel = () => {
     // modelLoader.loadModelToScene('/models/zuo.glb', baseModel => {
-    //   console.log(baseModel, '1111111');
+    //   // console.log(baseModel, '1111111');
 
     //   baseModel.setScalc(0.01);
     //   const model = baseModel.gltf.scene;
@@ -96,7 +96,7 @@ const initModel = () => {
     // });
 
     modelLoader.loadModelToScene('/models/porsche_911_930_turbo.glb', baseModel => {
-        console.log(baseModel, '1111111');
+        // console.log(baseModel, '1111111');
         baseModel.setScalc(0.2);
         // baseModel.object.rotation.y = Math.PI / 2;
         const model = baseModel.gltf.scene;
@@ -113,7 +113,7 @@ const initModel = () => {
                 rackList.push(item);
             }
         });
-        // console.log(rackList, 'rackList------');
+        // // console.log(rackList, 'rackList------');
 
         viewer.setRaycasterObjects(rackList);
 
@@ -121,7 +121,7 @@ const initModel = () => {
 };
 
 const planeAnimate = (texture: any): Animate => {
-    console.log(texture, 'texture');
+    // console.log(texture, 'texture');
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     const animateFn = {
@@ -146,7 +146,7 @@ const onMouseClick = (intersects: THREE.Intersection[]) => {
 
     let selectedObjectName = '';
     const findClickModel = (object: any) => {
-        console.log(object, 'object');
+        // console.log(object, 'object');
         if (object.type === 'Group') {
             selectedObjectName = object.name;
         }
@@ -155,7 +155,7 @@ const onMouseClick = (intersects: THREE.Intersection[]) => {
         }
     };
     findClickModel(selectedObject);
-    console.log(selectedObjectName);
+    // console.log(selectedObjectName);
 
     // if (!selectedObjectName || !selectedObjectName.includes('办公楼')) {
     //   // this.scene.remove(this.label);
@@ -163,7 +163,7 @@ const onMouseClick = (intersects: THREE.Intersection[]) => {
     // }
 
     // const selectedModel = viewer.scene.getObjectByName(selectedObjectName);
-    console.log(selectedObject, 'selectedObject');
+    // console.log(selectedObject, 'selectedObject');
 
     // 点击楼房
     if (selectedObject.name.includes('zuo')) {
@@ -219,10 +219,10 @@ const onMouseMove = (intersects: THREE.Intersection[]) => {
     // };
     findClickModel(selectedObject);
 
-    console.log(selectedObjectName, '--selectedObjectName---');
-    console.log(selectedObject, '------selectedObject---------');
+    // console.log(selectedObjectName, '--selectedObjectName---');
+    // console.log(selectedObject, '------selectedObject---------');
     // const rack = findParent(selectedObject, checkIsRack);
-    // console.log(rack, '-------rack---------');
+    // // console.log(rack, '-------rack---------');
     // if (rack) {
 
     //   boxHelperWrap.attach(rack);
