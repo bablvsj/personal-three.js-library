@@ -1,7 +1,8 @@
 <template>
     <div style="position: relative;">
         <div ref="canvasDom" id="sevenE" style="height: 800px;z-index:1 ;position: relative;"></div>
-        <div style="position: absolute;z-index:999;top:0;right: 0;cursor: pointer;font-size: 20px;margin:0 20px;" @click="exportCanvas">导出</div>
+        <div style="position: absolute;z-index:999;top:0;right: 0;cursor: pointer;font-size: 20px;margin:0 20px;"
+            @click="exportCanvas">导出</div>
     </div>
 </template>
   
@@ -130,8 +131,8 @@ onMounted(() => {
     addLight()
     document.getElementById("sevenE")?.appendChild(renderer.domElement);
     render()
-    
-    
+
+
 
 })
 
@@ -189,11 +190,35 @@ const initModel = () => {
         const mesh = gltf.scene.children[0]; //获取Mesh
         // console.log(mesh)
         bmw.scale.set(20, 20, 20); //模型缩放
+
+
+        gltf.scene.traverse(function (obj) {
+            if (obj.isMesh) {
+                // 模型材质重新设置
+                obj.material = new THREE.MeshLambertMaterial({
+                    color: 0x004444,
+                    transparent: true,
+                    opacity: 0.5,
+                });
+                // 模型边线设置
+                const edges = new THREE.EdgesGeometry(obj.geometry);
+                const edgesMaterial = new THREE.LineBasicMaterial({
+                    color: 0x00ffff,
+                })
+                const line = new THREE.LineSegments(edges, edgesMaterial);
+                obj.add(line);
+            }
+        });
+        // model.add(gltf.scene);
+
+
+
+
         scene.add(bmw) //将整个模型组添加到场景中
     }, (xhr) => {
         const percent = xhr.loaded / xhr.total;
 
-        if(percent==1) closeProgress()
+        if (percent == 1) closeProgress()
         // console.log('加载进度' + percent);
     })
 }

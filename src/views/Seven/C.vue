@@ -23,8 +23,8 @@ import { startProgress, closeProgress } from "@/utils/nprogress"
 const scene = new THREE.Scene()
 
 //镜头
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000)
-camera.position.set(0, 600, 600)    //镜头视角点设置
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 3000)
+camera.position.set(0, 900, 1300)    //镜头视角点设置
 camera.lookAt(0, 0, 0)
 
 
@@ -418,6 +418,97 @@ const createShapeGeo = () => {
     scene.add(points, pointsT)
 }
 
+const createShape = () => {
+    // Shape表示一个平面多边形轮廓
+    const shape = new THREE.Shape();
+    shape.moveTo(10, 0); //.currentPoint变为(10,0)
+    // 绘制直线线段，起点(10,0)，结束点(100,0)
+    shape.lineTo(100, 0);//.currentPoint变为(100, 0)
+    shape.lineTo(100, 100);//.currentPoint变为(100, 100)
+    shape.lineTo(10, 100);//.currentPoint变为(10, 100)
+
+    const geometryT = new THREE.ExtrudeGeometry(shape, {
+        depth: 20,//拉伸长度
+        bevelEnabled: false,//禁止倒角
+    });
+
+
+    // 下面代码绘制了一个矩形+扇形的轮廓，圆心在(100, 0),半径50。
+    const shapeT = new THREE.Shape();
+    shapeT.lineTo(100, 0); //.currentPoint变为(100,0)
+    // 圆弧.arc参数的圆心0,0坐标是相对当前.currentPoint而言，而不是坐标原点
+    shapeT.absarc(0, 0, 50, 0, Math.PI / 2); //.currentPoint变为圆弧线结束点坐标
+    // 绘制直线，直线起点：圆弧绘制结束的点  直线结束点：(0, 0)
+    shapeT.lineTo(0, 50);
+
+
+
+    const geometry = new THREE.ExtrudeGeometry(shapeT, {
+        depth: 20,//拉伸长度
+        bevelEnabled: false,//禁止倒角
+        curveSegments: 20,//shape曲线对应曲线细分数
+    });
+
+
+    const material = new THREE.MeshLambertMaterial({
+        side: THREE.DoubleSide,//双面显示看到管道内壁,
+        color: 0xeeee44,
+        // wireframe: true
+    });
+
+    const materialT = new THREE.MeshLambertMaterial({
+        side: THREE.DoubleSide,//双面显示看到管道内壁,
+        color: 0xe33e44,
+    });
+    const points = new THREE.Mesh(geometry, material);
+    const pointsT = new THREE.Mesh(geometryT, materialT)
+    points.position.set(300, 50, -100)
+    pointsT.position.set(300, 50, 0)
+
+    scene.add(points, pointsT)
+}
+
+
+const createShapeHoles = () => {
+    const shape = new THREE.Shape();
+    // .lineTo(100, 0)绘制直线线段，线段起点：.currentPoint，线段结束点：(100,0)
+    shape.lineTo(100, 0);
+    shape.lineTo(100, 100);
+    shape.lineTo(0, 100);
+
+    // Shape内孔轮廓
+    const path1 = new THREE.Path();// 圆孔1
+    path1.absarc(20, 20, 10);
+    const path2 = new THREE.Path();// 圆孔2
+    path2.absarc(80, 20, 10);
+    const path3 = new THREE.Path();// 方形孔
+    path3.moveTo(50, 50);
+    path3.lineTo(80, 50);
+    path3.lineTo(80, 80);
+    path3.lineTo(50, 80);
+
+    //三个内孔轮廓分别插入到holes属性中
+    shape.holes.push(path1, path2, path3);
+
+
+    const geometry = new THREE.ExtrudeGeometry(shape, {
+        depth: 20,//拉伸长度
+        bevelEnabled: false,//禁止倒角
+        curveSegments: 50,
+    });
+
+
+    const material = new THREE.MeshLambertMaterial({
+        side: THREE.DoubleSide,//双面显示看到管道内壁,
+        color: 0x254EDB,
+        // wireframe: true
+    });
+
+    const points = new THREE.Mesh(geometry, material);
+    points.position.set(300, 50, -300)
+    scene.add(points)
+}
+
 
 // const wlRed = new URL('@/assets/images/textTure/wenli_red.jpg', import.meta.url).href
 // const wlImg1 = new URL('@/assets/images/textTure/wenli_gray.jpg', import.meta.url).href
@@ -457,6 +548,8 @@ onMounted(() => {
     createTubeGeo()   // 曲线路径管道
     createLatheGeo()   // 旋转成型
     createShapeGeo()   // 轮廓填充 + 拉伸成型
+    createShape()   // 多边形 圆弧
+    createShapeHoles()   // 多边形 内孔
     // initModel()
     addLight()
     document.getElementById("sevenC")?.appendChild(renderer.domElement);
