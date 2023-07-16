@@ -42,7 +42,7 @@ const materialCircle = new THREE.MeshPhysicalMaterial({
 const circleMesh = new THREE.Mesh(geometryCircle, materialCircle)
 scene.add(circleMesh)
 
-circleMesh.position.set(0, 100, 0)
+circleMesh.position.set(0, 100, -200)
 
 const axis = new THREE.Vector3(0, 1, 0);
 axis.normalize(); //向量归一化
@@ -97,7 +97,11 @@ const mesh2 = new THREE.Mesh(geometry2, material2);
 
 scene.add(mesh, mesh2)
 // mesh2.position.z = 0;
-mesh2.position.z = 0.1;
+mesh2.position.z = -199;
+mesh.position.z = -199.1 
+
+
+;
 // camera.position.set(292*5, 223*5, 185*5);
 
 //渲染器
