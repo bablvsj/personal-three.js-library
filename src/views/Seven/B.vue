@@ -27,7 +27,7 @@ const materialCircle = new THREE.MeshStandardMaterial({
     // opacity: 0.9,//设置透明度
 })
 const circleMesh = new THREE.Mesh(geometryCircle, materialCircle)
-circleMesh.position.set(-150,20,-20)
+circleMesh.position.set(-150, 20, -20)
 
 const axis = new THREE.Vector3(0, 0, 0);
 axis.normalize(); //向量归一化
@@ -36,7 +36,7 @@ circleMesh.rotateOnAxis(axis, Math.PI / 100);//绕axis轴旋转π/8
 
 //创建两个网格模型mesh1、mesh2
 const geometry = new THREE.BoxGeometry(20, 20, 10);
-const material = new THREE.MeshStandardMaterial({color: 0x8DD815});
+const material = new THREE.MeshStandardMaterial({ color: 0x8DD815 });
 const group = new THREE.Group();
 const mesh1 = new THREE.Mesh(geometry, material);
 // const mesh2 = new THREE.Mesh(geometry, material);
@@ -47,14 +47,14 @@ mesh2.material = mesh1.material.clone()
 mesh2.name = "mesh2"
 mesh2.translateX(25);
 
-geometry.translate(50,10,-10);;
+geometry.translate(50, 10, -10);;
 
 // group.position.set(60,10,-100)
-group.add(circleMesh,mesh1,mesh2)
+group.add(circleMesh, mesh1, mesh2)
 
 scene.add(group);
 
-group.name ="整体模型"
+group.name = "整体模型"
 circleMesh.name = "圆模型"
 
 // console.log(group.children)
@@ -72,7 +72,7 @@ for (let i = 0; i < 5; i++) {
     mesh.name = i + 1 + '号楼';
     // // console.log('mesh.name',mesh.name);
 }
-group1.position.set(-30,45,-100);
+group1.position.set(-30, 45, -100);
 
 
 const group2 = new THREE.Group();
@@ -88,30 +88,30 @@ for (let i = 0; i < 5; i++) {
     group2.add(mesh); //添加到组对象group2
     mesh.name = i + 6 + '号楼';
 }
-group2.position.set(-30,30,-50);
+group2.position.set(-30, 30, -50);
 
 const model = new THREE.Group();
-model.name='小区房子';
+model.name = '小区房子';
 model.add(group1, group2);
-model.position.set(-50,0,-25);
+model.position.set(-50, 0, -25);
 
 
-scene.add(group1,group2)
-group2.traverse(function(obj) {
+scene.add(group1, group2)
+group2.traverse(function (obj) {
 
     // // console.log(group2.getWorldPosition(obj))
     // console.log('obj',obj);
     // console.log('所有模型节点的名称',obj.name);
     // obj.isMesh：if判断模型对象obj是不是网格模型'Mesh'
     if (obj.type === 'Mesh') {//判断条件也可以是obj.type === 'Mesh'
-    // console.log('所有模型节点的名称',obj.type);
+        // console.log('所有模型节点的名称',obj.type);
         // obj.material.color.set(0xffff00);
     }
 });
 
-const nameNode = scene.getObjectByName ("4号楼");
-const mesh1Name = scene.getObjectByName ("mesh1");
-const mesh2Name = scene.getObjectByName ("mesh2");
+const nameNode = scene.getObjectByName("4号楼");
+const mesh1Name = scene.getObjectByName("mesh1");
+const mesh2Name = scene.getObjectByName("mesh2");
 nameNode.material.color.set(0xff0000);
 mesh1Name.material.color.set(0x419010);
 mesh2Name.material.color.set(0xFFC5AE);
@@ -175,18 +175,18 @@ light9.position.set(-50, 100, 0);
 scene.add(light9);
 
 
-lightGroup.add(light,light2,light3,light4,light5,light6,light7,light8,light9)
+lightGroup.add(light, light2, light3, light4, light5, light6, light7, light8, light9)
 
 scene.add(lightGroup)
 
-const lightHelper = new THREE.DirectionalLightHelper(light3,5,0xffffff)
+const lightHelper = new THREE.DirectionalLightHelper(light3, 5, 0xffffff)
 
 
 // lightHelper.add(light,light2,light3,light4,light5,light6,light7,light8,light9,light10)
 
 scene.add(lightHelper)
 
-scene.remove(light,light2,light3,light4,light5,light6,light7,light8,light9,light10)
+scene.remove(light, light2, light3, light4, light5, light6, light7, light8, light9, light10)
 
 
 // grou.visible = false
