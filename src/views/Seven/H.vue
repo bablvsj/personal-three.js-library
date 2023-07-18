@@ -77,15 +77,15 @@ const snow = new URL('@/assets/images/textTure/snow.png', import.meta.url).href
 const geometry1 = new THREE.TubeGeometry(path, 20, 10, 10);
 const texLoader = new THREE.TextureLoader();
 //纹理贴图
-const texture = textLoader.load(rain)
+const texture = textLoader.load(snow)
 
 const spriteMaterial = new THREE.SpriteMaterial({
     color: 0x00ffff,
     map: texture, //设置精灵纹理贴图
-    transparent: true,//SpriteMaterial默认是true
+    // transparent: true,//SpriteMaterial默认是true
 
 })
-const sprite = new THREE.Sprite(spriteMaterial)
+// const sprite = new THREE.Sprite(spriteMaterial)
 
 // sprite.scale.set(50, 50, 10);
 // sprite.position.set(0, 100 + 10 / 2, 0);
@@ -93,17 +93,21 @@ const sprite = new THREE.Sprite(spriteMaterial)
 
 
 const group = new THREE.Group();
-for (let i = 0; i < 16000; i++) {
+for (let i = 0; i < 5000; i++) {
     // 精灵模型共享材质
     const sprite = new THREE.Sprite(spriteMaterial);
-    group.add(sprite);
-    sprite.scale.set(1, 1, 1);
+    
+    sprite.scale.set(15, 15, 15);
     // 设置精灵模型位置，在长方体空间上上随机分布
     const x = 1000 * (Math.random() - 0.5);
     const y = 600 * Math.random();
     const z = 1000 * (Math.random() - 0.5);
     sprite.position.set(x, y, z)
+    group.add(sprite);
 }
+
+console.log(group)
+// console.log(sprite)
 
 
 

@@ -23,8 +23,9 @@ const navList = [
   { label: "Gui-D", url: "/sevenD", desc: "2222222222" },
   { label: "渲染器和前端UI-E", url: "/sevenE", desc: "canvas导出图片、模型进度条、渲染部分配置、GLTF模型加载 " },
   { label: "曲线几何体-C", url: "/sevenC", desc: "2222222222" },
-  { label: "-G", url: "/sevenG", desc: "2222222222" },
   { label: "sprite-H", url: "/sevenH", desc: "精灵模型" },
+  { label: "后处理-G", url: "/sevenG", desc: "发光描边" },
+  { label: "射线Ray-I", url: "/sevenI", desc: "精灵模型" },
 ];
 
 const activeIndex = ref(0);

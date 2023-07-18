@@ -1,10 +1,10 @@
 <!-- eslint-disable indent -->
 
 <template>
-    <div ref="canvasDom" id="sevenG" style="height: 800px;"></div>
+    <div ref="canvasDom" id="sevenI" style="height: 800px;"></div>
 </template>
   
-<script setup name="SevenG" >
+<script setup name="SevenI" >
 /* eslint-disable */
 let stats;
 let grid;
@@ -68,18 +68,59 @@ const controls = new OrbitControls(camera, renderer.domElement)
 const gridHelper = new THREE.GridHelper(1000, 20, 0xDB2A2D, 0xdddddd)
 scene.add(gridHelper)
 
+const group1 = new THREE.Group()
+
+const geometry = new THREE.BoxGeometry(40, 40, 100);
+const material = new THREE.MeshPhongMaterial({ color: '#254EDB', flatShading: true });
+const material3 = new THREE.MeshPhongMaterial({ color: '#3366FF' });
+const material4 = new THREE.MeshPhongMaterial({ color: '#3366FF' });
+const mesh3 = new THREE.Mesh(geometry, material);
+const mesh4 = new THREE.Mesh(geometry, material3);
+const mesh5 = new THREE.Mesh(geometry, material4);
+mesh4.position.set(100, 0, 0)
+mesh5.position.set(200, 0, 0)
+group1.position.set(100, 100, -150)
+group1.add(mesh3, mesh4, mesh5)
+scene.add(group1);
+
+renderer.domElement.addEventListener('click', function (event) {
+    // .offsetY、.offsetX以canvas画布左上角为坐标原点,单位px
+    const px = event.offsetX;
+    const py = event.offsetY;
+    //屏幕坐标px、py转WebGL标准设备坐标x、y
+    //width、height表示canvas画布宽高度
+    const x = (px / widthI) * 2 - 1;
+    const y = -(py / heightI) * 2 + 1;
+    //创建一个射线投射器`Raycaster`
+    const raycaster = new THREE.Raycaster();
+    //.setFromCamera()计算射线投射器`Raycaster`的射线属性.ray
+    // 形象点说就是在点击位置创建一条射线，射线穿过的模型代表选中
+    raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+    //.intersectObjects([mesh1, mesh2, mesh3])对参数中的网格模型对象进行射线交叉计算
+    // 未选中对象返回空数组[],选中一个对象，数组1个元素，选中两个对象，数组两个元素
+    const intersects = raycaster.intersectObjects([mesh3, mesh4, mesh5]);
+    console.log("射线器返回的对象", intersects);
+    // intersects.length大于0说明，说明选中了模型
+    if (intersects.length > 0) {
+        // 选中模型的第一个模型，设置为红色
+        intersects[0].object.material.color.set(0xff0000);
+    }
+})
+
+
+
 
 const effectComposerBlock = () => {
     //创建模型
     const boxGeometry = new THREE.BoxGeometry(100, 100, 100);
     const boxMaterial = new THREE.MeshLambertMaterial({
-        color: 0x006f6e
+        color: 0x6690FF
     })
     const box = new THREE.Mesh(boxGeometry, boxMaterial)
     const group = new THREE.Group();
     const geometry = new THREE.BoxGeometry(40, 40, 100);
-    const material = new THREE.MeshPhongMaterial({ color: '#30A543', flatShading: true });
-    const material2 = new THREE.MeshPhongMaterial({ color: '#FF473A' });
+    const material = new THREE.MeshPhongMaterial({ color: '#254EDB', flatShading: true });
+    const material2 = new THREE.MeshPhongMaterial({ color: '#3366FF' });
     const mesh = new THREE.Mesh(geometry, material);
     const mesh2 = new THREE.Mesh(geometry, material2);
     mesh.position.set(150, 0, 0)
@@ -104,28 +145,61 @@ const effectComposerBlock = () => {
     composer.addPass(outlinePass);
 
 
+    const ray = new THREE.Ray()
+    ray.origin.set(1, 0, 3)
+    // ray.direction = new THREE.Vector3(100,100,100)
+    // 表示射线沿着x轴正方向
+    // ray.direction = new THREE.Vector3(1, 0, 0);
+    // 表示射线沿着x轴负方向
+    ray.direction = new THREE.Vector3(-1, 0, 0);
 
-    // const glitchPass = new UnrealBloomPass();   //虚化
-    // const glitchPass = new GlitchPass();   //抖动
-    // composer.addPass(glitchPass);
+    ray.direction = new THREE.Vector3(5, 0, 0).normalize();//.direction的值需要是单位向量，不是的话可以执行.normalize()归一化或者说标准化。
 
-    // 创建伽马校正通道
-    const gammaPass = new ShaderPass(GammaCorrectionShader);
-    composer.addPass(gammaPass);
+    // 表示射线沿着xy坐标轴的中间线
+    ray.direction = new THREE.Vector3(1, 1, 0).normalize();
+
+    // 三角形三个点坐标
+    const p1 = new THREE.Vector3(100, 25, 0);
+    const p2 = new THREE.Vector3(100, -25, 25);
+    const p3 = new THREE.Vector3(100, -25, -25);
+    const point = new THREE.Vector3();//用来记录射线和三角形的交叉点
+    // `.intersectTriangle()`计算射线和三角形是否相交叉，相交返回交点，不相交返回null
+    const result = ray.intersectTriangle(p1, p2, p3, false, point);
+    console.log('交叉点坐标', point);
+    console.log('查看是否相交', result);
+
+    // const r = ray.intersectTriangle(p1, p2, p3, true, point);  //参数4设为true，表示进行背面剔除
+    // console.log('查看是否相交', r);
+
+    const raycaster = new THREE.Raycaster();
+    console.log('射线属性', raycaster.ray);
+
+    raycaster.ray.origin = new THREE.Vector3(-100, 0, 0)
+    raycaster.ray.direction = new THREE.Vector3(1, 0, 0)
+
+    const intersects = raycaster.intersectObjects([mesh, mesh2, box]);
+
+    console.log("射线器返回的对象", intersects);
+    // intersects.length大于0说明，说明选中了模型
+    if (intersects.length > 0) {
+        console.log("交叉点坐标", intersects[0].point);
+        console.log("交叉对象", intersects[0].object);
+        console.log("射线原点和交叉点距离", intersects[0].distance);
+        intersects[0].object.material.color.set(0x041730);
+    }
 
 
-    const FXAAPass = new ShaderPass(FXAAShader);
-    // `.getPixelRatio()`获取`renderer.setPixelRatio()`设置的值
-    const pixelRatio = renderer.getPixelRatio();//获取设备像素比 
-    // width、height是canva画布的宽高度
-    FXAAPass.uniforms.resolution.value.x = 1 / (widthI * pixelRatio);
-    FXAAPass.uniforms.resolution.value.y = 1 / (heightI * pixelRatio);
-    // composer.addPass(FXAAPass);
 
-    // width、height是canva画布的宽高度
-    const smaaPass = new SMAAPass(widthI * pixelRatio, heightI * pixelRatio);
-    composer.addPass(smaaPass);
+
+
+
+
+
+
+
 }
+
+
 
 
 const render = () => {
@@ -137,7 +211,7 @@ const render = () => {
 
 onMounted(() => {
     effectComposerBlock()
-    document.getElementById("sevenG")?.appendChild(renderer.domElement);
+    document.getElementById("sevenI")?.appendChild(renderer.domElement);
     addLight()
     render()
     // createGUI()
