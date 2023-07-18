@@ -24,8 +24,9 @@ const navList = [
   { label: "渲染器和前端UI-E", url: "/sevenE", desc: "canvas导出图片、模型进度条、渲染部分配置、GLTF模型加载 " },
   { label: "曲线几何体-C", url: "/sevenC", desc: "2222222222" },
   { label: "sprite-H", url: "/sevenH", desc: "精灵模型" },
-  { label: "后处理-G", url: "/sevenG", desc: "发光描边" },
-  { label: "射线Ray-I", url: "/sevenI", desc: "精灵模型" },
+  { label: "射线Ray-I", url: "/sevenI", desc: "射线Ray、后处理(发光描边)" },
+  { label: "关键帧动画-G", url: "/sevenG", desc: "场景标注标签信息" },
+
 ];
 
 const activeIndex = ref(0);

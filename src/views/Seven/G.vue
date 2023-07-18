@@ -2,6 +2,12 @@
 
 <template>
     <div ref="canvasDom" id="sevenG" style="height: 800px;"></div>
+    <div class="pos" style="position: absolute;top:100px;right:0;font-size: 16px;display: flex;z-index:999;padding: 20px;">
+        <div @click="controlClipAction('play')" class="cursor-point">播放</div>
+        <div @click="controlClipAction('wait')" class="cursor-point" style="margin-left: 10px;">{{ waitText }}</div>
+        <div @click="controlClipAction" class="cursor-point" style="margin-left: 10px;">停止</div>
+
+    </div>
 </template>
   
 <script setup name="SevenG" >
@@ -35,6 +41,10 @@ import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';   // FXAA
 // SMAA相比较FXAA抗锯齿效果更好一些
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass.js';   // SMAA抗锯齿Shader   
 
+// 引入CSS2渲染器CSS2DRenderer和CSS2模型对象CSS2DObject
+import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+
+
 
 let scene, camera, renderer, composer;
 let object;
@@ -49,6 +59,8 @@ const params = {
     pulsePeriod: 0,
     usePatternTexture: false
 };
+
+const waitText = ref("暂停")
 
 
 
@@ -68,75 +80,88 @@ const controls = new OrbitControls(camera, renderer.domElement)
 const gridHelper = new THREE.GridHelper(1000, 20, 0xDB2A2D, 0xdddddd)
 scene.add(gridHelper)
 
+const group1 = new THREE.Group()
 
-const effectComposerBlock = () => {
-    //创建模型
-    const boxGeometry = new THREE.BoxGeometry(100, 100, 100);
-    const boxMaterial = new THREE.MeshLambertMaterial({
-        color: 0x006f6e
-    })
-    const box = new THREE.Mesh(boxGeometry, boxMaterial)
-    const group = new THREE.Group();
-    const geometry = new THREE.BoxGeometry(40, 40, 100);
-    const material = new THREE.MeshPhongMaterial({ color: '#30A543', flatShading: true });
-    const material2 = new THREE.MeshPhongMaterial({ color: '#FF473A' });
-    const mesh = new THREE.Mesh(geometry, material);
-    const mesh2 = new THREE.Mesh(geometry, material2);
-    mesh.position.set(150, 0, 0)
-    mesh2.position.set(250, 0, 0)
-    group.position.set(-450, 100, -450)
-    group.add(mesh2, mesh, box)
-    scene.add(group);
+const geometry = new THREE.BoxGeometry(40, 40, 100);
+const material = new THREE.MeshPhongMaterial({ color: '#254EDB', flatShading: true });
+const material3 = new THREE.MeshPhongMaterial({ color: '#3366FF' });
+const material4 = new THREE.MeshPhongMaterial({ color: '#3366FF' });
+const mesh3 = new THREE.Mesh(geometry, material);
+const mesh4 = new THREE.Mesh(geometry, material3);
+const mesh5 = new THREE.Mesh(geometry, material4);
+mesh4.position.set(100, 0, 0)
+mesh5.position.set(200, 0, 0)
+group1.position.set(100, 100, -150)
+group1.add(mesh3, mesh4, mesh5)
 
-    composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    outlinePass = new OutlinePass(new THREE.Vector2(widthI, heightI), scene, camera);
-    //模型描边颜色，默认白色         
-    outlinePass.visibleEdgeColor.set(0xffff00);
-    //高亮发光描边厚度
-    outlinePass.edgeThickness = 1;
-    //高亮描边发光强度
-    outlinePass.edgeStrength = 10;
-    //模型闪烁频率控制，默认0不闪烁
-    outlinePass.pulsePeriod = 0;
-
-    outlinePass.selectedObjects = [group];
-    composer.addPass(outlinePass);
+scene.add(group1)
 
 
+// 给需要设置关键帧动画的模型命名
+mesh3.name = "Box";
+const times = [0, 3, 6]; //时间轴上，设置三个时刻0、3、6秒
+// times中三个不同时间点，物体分别对应values中的三个xyz坐标
+const values = [0, 0, 0, -500, 0, 0, 0, 0, 500];
+// 0~3秒，物体从(0,0,0)逐渐移动到(100,0,0),3~6秒逐渐从(100,0,0)移动到(0,0,100)
+const posKF = new THREE.KeyframeTrack('Box.position', times, values);
+// 从2秒到5秒，物体从红色逐渐变化为蓝色
+const colorKF = new THREE.KeyframeTrack('Box.material.color', [2, 5], [1, 0, 0, 0, 0, 1]);
+// 1.3 基于关键帧数据，创建一个clip关键帧动画对象，命名"test"，持续时
 
-    // const glitchPass = new UnrealBloomPass();   //虚化
-    // const glitchPass = new GlitchPass();   //抖动
-    // composer.addPass(glitchPass);
+// 1.3 AnimationClip表示一个关键帧动画，可以基于关键帧数据产生动画效果
+// 创建一个clip关键帧动画对象，命名"test"，动画持续时间6s
+// AnimationClip包含的所有关键帧数据都放到参数3数组中即可
+const clip = new THREE.AnimationClip("test", 6, [posKF, colorKF]);
 
-    // 创建伽马校正通道
-    const gammaPass = new ShaderPass(GammaCorrectionShader);
-    composer.addPass(gammaPass);
+//包含关键帧动画的模型对象作为AnimationMixer的参数创建一个播放器mixer
+const mixer = new THREE.AnimationMixer(mesh3);
 
+const clipAction = mixer.clipAction(clip)
+clipAction.play()
+clipAction.loop = THREE.LoopOnce;  //只执行一次 
+clipAction.clampWhenFinished = true;  // 物体状态停留在动画结束的时候
+// clipAction.timeScale = 1;//默认
+clipAction.timeScale = 2;//2倍速
+// clipAction.stop();//动画停止结束，回到开始状态
 
-    const FXAAPass = new ShaderPass(FXAAShader);
-    // `.getPixelRatio()`获取`renderer.setPixelRatio()`设置的值
-    const pixelRatio = renderer.getPixelRatio();//获取设备像素比 
-    // width、height是canva画布的宽高度
-    FXAAPass.uniforms.resolution.value.x = 1 / (widthI * pixelRatio);
-    FXAAPass.uniforms.resolution.value.y = 1 / (heightI * pixelRatio);
-    // composer.addPass(FXAAPass);
-
-    // width、height是canva画布的宽高度
-    const smaaPass = new SMAAPass(widthI * pixelRatio, heightI * pixelRatio);
-    composer.addPass(smaaPass);
+const controlClipAction = (type) => {
+    if (type === 'play') clipAction.play()
+    else if (type === 'wait') { 
+        clipAction.paused = !clipAction.paused 
+        if(clipAction.paused) waitText.value = "继续"
+        else waitText.value = "暂停"
+    }
+    else clipAction.stop()
 }
 
+
+
+
+
+// scene.add(group1);
+
+
+
+
+// const div = document.getElementById('tag')
+// const tag = new CSS2DObject(div)
+// tag.position.set(50, 0, 50);
+
+// scene.add(tag)
+
+const clock = new THREE.Clock();
 
 const render = () => {
     controls.update()
     requestAnimationFrame(render)
     renderer.render(scene, camera)
-    composer.render();;
+
+    const frameT = clock.getDelta();
+    // 更新播放器相关的时间
+    mixer.update(frameT);
 }
 
 onMounted(() => {
-    effectComposerBlock()
     document.getElementById("sevenG")?.appendChild(renderer.domElement);
     addLight()
     render()

@@ -44,8 +44,13 @@ body {
   display: flex;
   padding: 20px;
 
-  .li{
+  .li {
     margin-right: 20px;
     cursor: pointer;
   }
-}</style>
+}
+
+.cursor-point{
+  cursor: pointer;
+}
+</style>
