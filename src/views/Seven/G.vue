@@ -6,6 +6,7 @@
         <div @click="controlClipAction('play')" class="cursor-point">播放</div>
         <div @click="controlClipAction('wait')" class="cursor-point" style="margin-left: 10px;">{{ waitText }}</div>
         <div @click="controlClipAction" class="cursor-point" style="margin-left: 10px;">停止</div>
+        <div @click="nextStep" class="cursor-point" style="margin-left: 10px;">下一步</div>
 
     </div>
 </template>
@@ -117,23 +118,60 @@ const clip = new THREE.AnimationClip("test", 6, [posKF, colorKF]);
 const mixer = new THREE.AnimationMixer(mesh3);
 
 const clipAction = mixer.clipAction(clip)
+
 clipAction.play()
 clipAction.loop = THREE.LoopOnce;  //只执行一次 
 clipAction.clampWhenFinished = true;  // 物体状态停留在动画结束的时候
 // clipAction.timeScale = 1;//默认
 clipAction.timeScale = 2;//2倍速
 // clipAction.stop();//动画停止结束，回到开始状态
+clipAction.paused = true;
+clipAction.time = 1;//物体状态为动画1秒对应状态
+clipAction.time = 3;//物体状态为动画3秒对应状态
+clip.duration = 4
+
 
 const controlClipAction = (type) => {
     if (type === 'play') clipAction.play()
-    else if (type === 'wait') { 
-        clipAction.paused = !clipAction.paused 
-        if(clipAction.paused) waitText.value = "继续"
+    else if (type === 'wait') {
+        clipAction.paused = !clipAction.paused
+        if (clipAction.paused) waitText.value = "继续"
         else waitText.value = "暂停"
     }
     else clipAction.stop()
 }
 
+
+const gui = new GUI(); //创建GUI对象
+let duration = 10
+gui.add(clipAction, 'time', 0, duration).step(0.1).name('拖动').onChange(function () {
+    //如果动画处于播放状态会影响拖动条时间定位
+    if (!clipAction.paused){
+        clipAction.paused = true; //切换为暂停状态
+        bu.innerHTML = '播放'; //修改按钮样式
+    }
+});
+// gui.add(clipAction, 'time', 0, 6).step(0.5);
+
+
+const nextStep = () => {
+    clipAction.time += 0.5
+}
+
+// let mixer = null; //声明一个播放器变量
+// let clipAction = null; //声明一个播放器变量
+// const loader = new GLTFLoader();
+// loader.load("../../../public/models/datacenter.glb", function (gltf) {
+//     console.log('控制台查看gltf对象结构', gltf);
+
+//     let tfw = gltf.scene
+//     tfw.scale.set(20, 20, 20)
+//     scene.add(tfw)
+//     mixer = new THREE.AnimationMixer(gltf.scene);
+//     //  获取gltf.animations[0]的第一个clip动画对象
+//     clipAction = mixer.clipAction(gltf.animations[0]); //创建动画clipAction对象
+//     clipAction.play(); //播放动画
+// })
 
 
 
@@ -158,7 +196,7 @@ const render = () => {
 
     const frameT = clock.getDelta();
     // 更新播放器相关的时间
-    mixer.update(frameT);
+    mixer?.update(frameT);
 }
 
 onMounted(() => {
