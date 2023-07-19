@@ -1,17 +1,6 @@
-## threejs-demo
+致敬 源地址： https://stevenfeng.cn/threejs-demo/
 
-### 项目截图
+ant design template https://www.creative-tim.com/product/muse-vue-ant-design-dashboard-pro   https://github.com/creativetimofficial/muse-vue-ant-design-dashboard
 
-![项目截图](./public/%E9%A1%B9%E7%9B%AE%E6%88%AA%E5%9B%BE.gif "项目截图")
+图解webgl https://www.cnblogs.com/wanbo/p/6754066.html
 
-### 预览地址
-
-https://stevenfeng.cn/threejs-demo/
-
-### 项目启动
-
-```shell
-npm i
-
-npm start
-```
