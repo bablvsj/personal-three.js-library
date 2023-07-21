@@ -1,65 +1,61 @@
 <template>
-  <div class="layout">
-    <!-- <Header>数据中心可视化系统</Header> -->
-    <div class="layout-content">
-      <!-- <div class="layout-content-left">
-        <Panel>
-          <div>向西28° 2023/04/02 12:00 正常</div>
-          <div>向西28° 2023/04/02 12:00 正常</div>
-          <div>向西28° 2023/04/02 12:00 正常</div>
-        </Panel>
-        <Panel>
-          <PieChart></PieChart>
-        </Panel>
-      </div>
-      <div class="layout-content-right">
-        <Panel>
-          <LineCharts></LineCharts>
-        </Panel>
-      </div> -->
-      <Sence></Sence>
-      <!-- <FirstThree></FirstThree> -->
-      <!-- <SevenA></SevenA> -->
-      <SevenB></SevenB>
-      
-    </div>
-  </div>
+	<div>
+		<a-layout class="layout-dashboard" id="layout-dashboard"
+			:class="[navbarFixed ? 'navbar-fixed' : '', !sidebarCollapsed ? 'has-sidebar' : '', layoutClass]">
+			<DashboardSidebar :sidebarCollapsed="sidebarCollapsed" :sidebarColor="sidebarColor" :sidebarTheme="sidebarTheme"
+				@toggleSidebar="toggleSidebar"></DashboardSidebar>
+			<a-layout>
+				<DashboardHeader :sidebarCollapsed="sidebarCollapsed" :navbarFixed="navbarFixed"
+					@toggleSettingsDrawer="toggleSettingsDrawer" @toggleSidebar="toggleSidebar"></DashboardHeader>
+				<a-layout-content>
+					<router-view />
+				</a-layout-content>
+
+				<DashboardFooter></DashboardFooter>
+				<a-button class="fab" shape="circle" @click="showSettingsDrawer = true">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd"
+							d="M11.4892 3.17094C11.1102 1.60969 8.8898 1.60969 8.51078 3.17094C8.26594 4.17949 7.11045 4.65811 6.22416 4.11809C4.85218 3.28212 3.28212 4.85218 4.11809 6.22416C4.65811 7.11045 4.17949 8.26593 3.17094 8.51078C1.60969 8.8898 1.60969 11.1102 3.17094 11.4892C4.17949 11.7341 4.65811 12.8896 4.11809 13.7758C3.28212 15.1478 4.85218 16.7179 6.22417 15.8819C7.11045 15.3419 8.26594 15.8205 8.51078 16.8291C8.8898 18.3903 11.1102 18.3903 11.4892 16.8291C11.7341 15.8205 12.8896 15.3419 13.7758 15.8819C15.1478 16.7179 16.7179 15.1478 15.8819 13.7758C15.3419 12.8896 15.8205 11.7341 16.8291 11.4892C18.3903 11.1102 18.3903 8.8898 16.8291 8.51078C15.8205 8.26593 15.3419 7.11045 15.8819 6.22416C16.7179 4.85218 15.1478 3.28212 13.7758 4.11809C12.8896 4.65811 11.7341 4.17949 11.4892 3.17094ZM10 13C11.6569 13 13 11.6569 13 10C13 8.34315 11.6569 7 10 7C8.34315 7 7 8.34315 7 10C7 11.6569 8.34315 13 10 13Z"
+							fill="#111827" />
+					</svg>
+				</a-button>
+				<div class="sidebar-overlay" @click="sidebarCollapsed = true" v-show="!sidebarCollapsed"></div>
+			</a-layout>
+
+		</a-layout>
+	</div>
 </template>
 
-<script setup lang="ts" name="Layout">
-// import Header from './Header.vue';
-import Sence from '@/components/Sence.vue';
-// import Panel from '@/components/Panel/index.vue';
-// import LineCharts from '@/components/Charts/LineChart.vue';
-// import PieChart from '@/components/Charts/PieChart.vue';
-// import FirstThree from '@/components/FirstThree/index.vue';
-// import SevenA from '@/components/SevenA.vue';
-// import SevenB from '@/components/SevenB.vue';
+<script setup lang="ts">
+
+import DashboardSidebar from './Sidebars/DashboardSidebar.vue'
+import DashboardHeader from './/Headers/DashboardHeader.vue'
+import DashboardFooter from './/Footers/DashboardFooter.vue'
+import { ref } from 'vue'
+// import DashboardSettingsDrawer from '@/components/Sidebars/DashboardSettingsDrawer';
+const sidebarCollapsed = ref(false)
+const sidebarColor = ref("primary")
+const sidebarTheme = ref("light")
+const navbarFixed = ref(false)
+const showSettingsDrawer = ref(false)
+
+
+const toggleSidebar = (value) => {
+	sidebarCollapsed.value = value;
+}
+const toggleSettingsDrawer = (value) => {
+	showSettingsDrawer.value = value;
+}
+const toggleNavbarPosition = (value) => {
+	navbarFixed.value = value;
+}
+const updateSidebarTheme = (value) => {
+	sidebarTheme.value = value;
+}
+const updateSidebarColor = (value) => {
+	sidebarColor.value = value;
+}
+
 </script>
 
-<style scope>
-.layout {
-  width: 100vw;
-  height: 100vh;
-}
-.layout-content {
-  width: 100vw;
-  height: 100vh;
-  background-color: #fff;
-}
-.layout-content-left {
-  position: absolute;
-  left: 0.3rem;
-  top: 70px;
-  width: 30vw;
-}
-.layout-content-right {
-  position: absolute;
-  right: 0.6rem;
-  top: 70px;
-  width: 30vw;
-}
-.panel {
-  margin-bottom: 0.3rem;
-}
-</style>
+
