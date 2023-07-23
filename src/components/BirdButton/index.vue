@@ -39,7 +39,7 @@
     border: 3px solid $border-color;
     border-radius: 30px;
     // background-color: $primary-color;
-    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
     cursor: pointer;
     position: relative;
 
