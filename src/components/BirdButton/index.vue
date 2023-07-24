@@ -34,8 +34,8 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    width: 200px;
-    height: 60px;
+    width: 180px;
+    height: 50px;
     border: 3px solid $border-color;
     border-radius: 30px;
     // background-color: $primary-color;
@@ -55,7 +55,8 @@
       position: relative;
 
       span {
-        font-size: 24px;
+        font-size: 20px;
+        font-weight: bold;
         letter-spacing: 2px;
         color: $border-color;
         z-index: 2;
@@ -65,15 +66,11 @@
       &::before,
       &::after {
         content: "";
-
         position: absolute;
         bottom: 0;
-
         width: 90px;
-        height: 30px;
-
+        height: 20px;
         background-color: #f4e19c;
-
         clip-path: path(
           "M13.77,37.35L.25,16.6c-.87-1.33,.69-2.91,2-2.02l12.67,8.59c.81,.55,1.91,.14,2.18-.81l2.62-9.33c.39-1.4,2.34-1.42,2.76-.02l3.6,11.99c.33,1.11,1.74,1.4,2.47,.52L49.38,.52c.87-1.04,2.53-.42,2.53,.95V23.7c0,1.13,1.2,1.83,2.16,1.26l12.75-7.51c.85-.5,1.94,0,2.13,.98l1.5,7.6c.2,1.03,1.37,1.51,2.22,.92l17.74-12.3c1.09-.75,2.52,.25,2.21,1.55l-2.44,10.2c-.26,1.09,.74,2.06,1.8,1.75l30.8-9.04c1.37-.4,2.42,1.26,1.49,2.36l-9.07,10.66c-.83,.98-.1,2.49,1.17,2.42l12.12-.68c1.6-.09,2.12,2.15,.65,2.8l-2.73,1.21c-.18,.08-.38,.12-.58,.12H14.97c-.48,0-.93-.25-1.2-.65Z"
         );
@@ -164,12 +161,13 @@
       );
       transition: all 0.2s ease;
       z-index: 3;
+      transform: scale(0.8);
     }
 
     &:hover {
       .buttonWrapper {
         span {
-          letter-spacing: 4px;
+          letter-spacing: 6px;
         }
         &::before {
           transform: translateX(-12px);
@@ -188,8 +186,8 @@
           .birdFace {
             &::before,
             &::after {
-              width: 6px;
-              height: 6px;
+              width: 5px;
+              height: 5px;
               animation: eye 5s linear infinite;
             }
           }

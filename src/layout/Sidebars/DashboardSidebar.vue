@@ -4,7 +4,7 @@
 		:collapsed="sidebarCollapsed" @collapse="$emit('toggleSidebar', !sidebarCollapsed)" :trigger="null"
 		:class="['ant-layout-sider-' + sidebarColor, 'ant-layout-sider-' + sidebarTheme]" theme="light"
 		:style="{ backgroundColor: 'transparent', }">
-		<div class="brand"><img src="images/logo-ct-black.png" alt=""> <span>Muse Dashboard</span></div>
+		<div class="brand cursor-point" @click="router.push('/home')"><img src="images/logo-ct-black.png" alt=""> <span>Muse Dashboard</span></div>
 		<hr>
 
 		<!-- Sidebar Navigation Menu -->
@@ -33,6 +33,10 @@
 </template>
 
 <script setup>
+
+import { useRouter } from "vue-router"
+
+const router = useRouter()
 
 const menuList = [
 	// { label: "Home", url: "/home", desc: "2222222222" },
