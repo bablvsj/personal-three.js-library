@@ -34,7 +34,8 @@
 
 <script setup>
 
-const menuList = [{ label: "Home", url: "/home", desc: "2222222222" },
+const menuList = [
+	// { label: "Home", url: "/home", desc: "2222222222" },
 { label: "模型对象-F", url: "/sevenF", desc: "2222222222" },
 { label: "层级模型-B", url: "/sevenB", desc: "2222222222" },
 { label: "纹理贴图-A", url: "/sevenA", desc: "2222222222" },

@@ -402,7 +402,7 @@
 	}
 	.ant-layout-content {
 		padding: 0px;
-		margin: 0px 20px 0px;
+		margin: 0px 10px 0px;
 	}
 	// / Content/Main Layout
 
@@ -410,14 +410,14 @@
 	.ant-layout-header {
 		background: transparent;
 		height: auto;
-		padding: 16px;
-		margin: 10px 4px;
+		padding: 10px;
+		margin: 9px 4px;
 		line-height: inherit;
 		border-radius: 12px;
 		transition: .2s;
 				
 		@media( min-width: $md ){
-			margin: 10px 20px;
+			margin: 9px 20px;
 		}
 
 	}
@@ -425,7 +425,7 @@
 		.ant-layout>div>.ant-affix .ant-layout-header {
 			background: $color-gray-1;
 			box-shadow: $shadow-1;
-			margin: 10px 20px;
+			margin: 3px 20px;
 		}
 		&.has-sidebar .ant-layout>div>.ant-affix {
 			z-index: 1;
