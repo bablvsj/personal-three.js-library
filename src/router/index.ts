@@ -99,6 +99,11 @@ export const constantRoutes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue')
+      },
+      {
+        path: '/eightA',
+        name: 'EightA',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Eight/A.vue')
       }
     ]
   },
