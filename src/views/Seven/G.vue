@@ -16,7 +16,6 @@
 let stats;
 let grid;
 
-
 const wheels = [];
 import { ref, onMounted, onUnmounted, } from 'vue';
 import Floors from '@/modules/Floors';

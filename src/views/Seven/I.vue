@@ -206,7 +206,7 @@ const render = () => {
     controls.update()
     requestAnimationFrame(render)
     renderer.render(scene, camera)
-    composer.render();;
+    composer.render();
 }
 
 onMounted(() => {
