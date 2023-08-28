@@ -109,6 +109,11 @@ export const constantRoutes = [
         path: '/eightB',
         name: 'EightB',
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Eight/B.vue')
+      },
+      {
+        path: '/eightC',
+        name: 'EightC',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Eight/C.vue')
       }
     ]
   },

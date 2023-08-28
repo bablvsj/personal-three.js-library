@@ -59,6 +59,7 @@ const router = useRouter()
 
 const menuList = [
   // { label: "Home", url: "/home", desc: "2222222222" },
+  { label: '八月-C', url: '/eightC', desc: '相机模型' },
   { label: '八月-A', url: '/eightA', desc: 'tween.js' },
   { label: '八月-B', url: '/eightB', desc: 'tween.js' },
   { label: '模型对象-F', url: '/sevenF', desc: '2222222222' },
