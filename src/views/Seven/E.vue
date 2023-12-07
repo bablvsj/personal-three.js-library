@@ -24,25 +24,25 @@ import { startProgress, closeProgress } from "@/utils/nprogress"
 const scene = new THREE.Scene()
 
 //镜头
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000)
-camera.position.set(100, 1000, 100)    //镜头视角点设置
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+camera.position.set(200, 200, 200)    //镜头视角点设置
 camera.lookAt(0, 0, 0)
 
 //圆形
-const geometryCircle = new THREE.BoxGeometry(50, 50, 50)
+const geometryCircle = new THREE.BoxGeometry(10, 10, 10)
 const materialCircle = new THREE.MeshPhysicalMaterial({
-    color: 0x102693,
+    // color: 0x102693,
     // metalness: 1.0,//金属度属性
     // side: THREE.FrontSide,
-    metalness: 0,   //金属度属性
-    roughness: 0,
+    // metalness: 0,   //金属度属性
+    // roughness: 0,
     // transparent: true,//开启透明
     // opacity: 0.9,//设置透明度
 })
 const circleMesh = new THREE.Mesh(geometryCircle, materialCircle)
 scene.add(circleMesh)
 
-circleMesh.position.set(0, 100, -200)
+circleMesh.position.set(0, 20, -200)
 
 const axis = new THREE.Vector3(0, 1, 0);
 axis.normalize(); //向量归一化
@@ -65,14 +65,14 @@ Euler.y = Math.PI / 2;
 Euler.z = Math.PI / 4;
 circleMesh.rotateOnAxis(axis, Math.PI / 100);//绕axis轴旋转π/8
 
-circleMesh.material = new THREE.MeshPhysicalMaterial({
-    color: circleMesh.material.color, //默认颜色
-    metalness: 0,//车外壳金属度
-    roughness: 0,//车外壳粗糙度
+circleMesh.material = new THREE.MeshBasicMaterial({
+    // color: circleMesh.material.color, //默认颜色
+    // metalness: 0,//车外壳金属度
+    // roughness: 0,//车外壳粗糙度
     envMap: textureCube, //环境贴图
-    transmission: 1,
-    envMapIntensity: 2.5, //环境贴图对Mesh表面影响程度
-    ior: 1.5,//折射率
+    // transmission: 1,
+    // envMapIntensity: 2.5, //环境贴图对Mesh表面影响程度
+    // ior: 1.5,//折射率
 })
 
 
@@ -95,7 +95,7 @@ const material2 = new THREE.MeshLambertMaterial({
 });
 const mesh2 = new THREE.Mesh(geometry2, material2);
 
-scene.add(mesh, mesh2)
+// scene.add(mesh, mesh2)
 // mesh2.position.z = 0;
 mesh2.position.z = -199;
 mesh.position.z = -199.1 
@@ -107,7 +107,7 @@ mesh.position.z = -199.1
 //渲染器
 const renderer = new THREE.WebGLRenderer({
     antialias: false,//想把canvas画布上内容下载到本地，需要设置为true
-    preserveDrawingBuffer: true,
+    // preserveDrawingBuffer: true,
     logarithmicDepthBuffer: true // 设置对数深度缓冲区，优化深度冲突问题   当两个面间隙过小或重合时，对数深度缓冲区无效
 })
 
@@ -192,28 +192,28 @@ const initModel = () => {
         // console.log(gltf);
         const bmw = gltf.scene
         const mesh = gltf.scene.children[0]; //获取Mesh
-        // console.log(mesh)
+        console.log(mesh)
         bmw.scale.set(20, 20, 20); //模型缩放
 
 
-        gltf.scene.traverse(function (obj) {
-            if (obj.isMesh) {
-                // 模型材质重新设置
-                obj.material = new THREE.MeshLambertMaterial({
-                    color: 0x004444,
-                    transparent: true,
-                    opacity: 0.5,
-                });
-                // 模型边线设置
-                const edges = new THREE.EdgesGeometry(obj.geometry);
-                const edgesMaterial = new THREE.LineBasicMaterial({
-                    color: 0x00ffff,
-                })
-                const line = new THREE.LineSegments(edges, edgesMaterial);
-                obj.add(line);
-            }
-        });
-        // model.add(gltf.scene);
+        // gltf.scene.traverse(function (obj) {
+        //     if (obj.isMesh) {
+        //         // 模型材质重新设置
+        //         obj.material = new THREE.MeshPhysicalMaterial({
+        //             // color: 0x004444,
+        //             // transparent: true,
+        //             // opacity: 0.5,
+        //         });
+        //         // 模型边线设置
+        //         const edges = new THREE.EdgesGeometry(obj.geometry);
+        //         const edgesMaterial = new THREE.LineBasicMaterial({
+        //             // color: 0x00ffff,
+        //         })
+        //         const line = new THREE.LineSegments(edges, edgesMaterial);
+        //         obj.add(line);
+        //     }
+        // });
+        scene.add(gltf.scene);
 
 
 

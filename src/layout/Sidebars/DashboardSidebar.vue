@@ -1,10 +1,10 @@
 <template>
   <!-- Main Sidebar -->
 
-  <div style="height: 50px; width: 100vw;display:flex;justify-content:space-between;align-items:center;">
-    <a-menu theme="light" mode="horizontal" v-model:selectedKeys="current" :items="menuList" @click="handleClick"  subMenuCloseDelay=".5" >
+  <div style="height: 50px; width: 100vw;display:flex;justify-content:space-between;align-items:center;padding: 0 20px;">
+    <div style="width: 80%;"><a-menu theme="light" mode="horizontal" v-model:selectedKeys="current" :items="menuList" @click="handleClick"  subMenuCloseDelay=".5" >
      
-    </a-menu>
+    </a-menu></div>
     <DashboardHeader ></DashboardHeader>
 
      <!-- <a-menu-item v-for="(item, index) in menuList" class="menu-item">
