@@ -1,26 +1,13 @@
 <template>
   <!-- Main Sidebar -->
-  <a-layout-sider
-    collapsible
-    class="sider-primary"
-    breakpoint="lg"
-    collapsed-width="0"
-    width="250px"
-    :collapsed="sidebarCollapsed"
-    @collapse="$emit('toggleSidebar', !sidebarCollapsed)"
-    :trigger="null"
-    :class="['ant-layout-sider-' + sidebarColor, 'ant-layout-sider-' + sidebarTheme]"
-    theme="light"
-    :style="{ backgroundColor: 'transparent' }"
-  >
-    <div class="brand cursor-point" @click="router.push('/home')">
-      <img src="images/logo-ct-black.png" alt="" /> <span>Muse Dashboard</span>
-    </div>
-    <hr />
 
-    <!-- Sidebar Navigation Menu -->
-    <a-menu theme="light" mode="inline">
-      <a-menu-item v-for="(item, index) in menuList" class="menu-item">
+  <div style="height: 50px; width: 100vw;display:flex;justify-content:space-between;align-items:center;">
+    <a-menu theme="light" mode="horizontal" v-model:selectedKeys="current" :items="menuList" @click="handleClick"  subMenuCloseDelay=".5" >
+     
+    </a-menu>
+    <DashboardHeader ></DashboardHeader>
+
+     <!-- <a-menu-item v-for="(item, index) in menuList" class="menu-item">
         <router-link :to="item.url">
           <span class="icon">
             <svg
@@ -46,35 +33,89 @@
           </span>
           <span class="label">{{ item.label }}</span>
         </router-link>
-      </a-menu-item>
-    </a-menu>
-  </a-layout-sider>
+      </a-menu-item> -->
+  </div>
+
   <!-- / Main Sidebar -->
 </template>
 
 <script setup>
+import { h,ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue'
+import DashboardHeader from '../Headers/DashboardHeader.vue'
+// import type { MenuProps, ItemType } from 'ant-design-vue'
 
 const router = useRouter()
 
+const current = ref(['mail']);
+
 const menuList = [
-  // { label: "Home", url: "/home", desc: "2222222222" },
-  { label: '八月-C', url: '/eightC', desc: '相机模型' },
-  { label: '八月-A', url: '/eightA', desc: 'tween.js' },
-  { label: '八月-B', url: '/eightB', desc: 'tween.js' },
-  { label: '模型对象-F', url: '/sevenF', desc: '2222222222' },
-  { label: '层级模型-B', url: '/sevenB', desc: '2222222222' },
-  { label: '纹理贴图-A', url: '/sevenA', desc: '2222222222' },
-  { label: 'Gui-D', url: '/sevenD', desc: '2222222222' },
   {
-    label: '渲染器和前端UI-E',
-    url: '/sevenE',
-    desc: 'canvas导出图片、模型进度条、渲染部分配置、GLTF模型加载 '
+    key: 'mail',
+    icon: () => h(MailOutlined),
+    label: 'Home',
+    title: 'Home',
+    url:"/home"
   },
-  { label: '曲线几何体-C', url: '/sevenC', desc: '2222222222' },
-  { label: 'sprite-H', url: '/sevenH', desc: '精灵模型' },
-  { label: '射线Ray-I', url: '/sevenI', desc: '射线Ray、后处理(发光描边)' },
-  { label: '关键帧动画-G', url: '/sevenG', desc: '场景标注标签信息' }
+  {
+    key: 'app',
+    icon: () => h(AppstoreOutlined),
+    label: 'Basic',
+    title: 'Basic',
+    children: [
+      {
+        type: 'group',
+        label: '基础',
+        children: [
+          // {
+          //   label: 'Option 3',
+          //   key: 'setting:3'
+          // },
+          { label: '模型对象-F', url: '/sevenF', desc: '2222222222',key:"basic-1" },
+          { label: '层级模型-B', url: '/sevenB', desc: '2222222222',key:"basic-2" },
+          { label: '纹理贴图-A', url: '/sevenA', desc: '2222222222' ,key:"basic-3"},
+          { label: 'Gui-D', url: '/sevenD', desc: '2222222222' ,key:"basic-4"},
+          {
+            label: '渲染器和前端UI-E',
+            url: '/sevenE',
+            desc: 'canvas导出图片、模型进度条、渲染部分配置、GLTF模型加载 ',key:"basic-5"
+          },
+          { label: '曲线几何体-C', url: '/sevenC', desc: '2222222222',key:"basic-6"},
+          { label: 'sprite-H', url: '/sevenH', desc: '精灵模型' ,key:"basic-7"},
+          { label: '射线Ray-I', url: '/sevenI', desc: '射线Ray、后处理(发光描边)',key:"basic-8" },
+          { label: '关键帧动画-G', url: '/sevenG', desc: '场景标注标签信息' ,key:"basic-9"}
+        ]
+      }
+    ]
+  },
+  {
+    key: 'sub1',
+    icon: () => h(SettingOutlined),
+    label: 'Advanced',
+    title: 'Advanced',
+    children: [
+      {
+        type: 'group',
+        label: '进阶',
+        children: [
+          // {
+          //   label: 'Option 2',
+          //   key: 'setting:2'
+          // },
+          { label: '八月-C', url: '/eightC', desc: '相机模型' ,key:"advanced-1"},
+          { label: '八月-A', url: '/eightA', desc: 'tween.js',key:"advanced-2" },
+          { label: '八月-B', url: '/eightB', desc: 'tween.js',key:"advanced-3" }
+        ]
+      }
+    ]
+  }
+  // {
+  //   key: 'alipay',
+  //   label: h('a', { href: 'https://antdv.com', target: '_blank' }, 'Link'),
+  //   title: 'Link',
+  // },
+  // { label: "Home", url: "/home", desc: "2222222222" },
 ]
 
 const props = defineProps({
@@ -95,10 +136,22 @@ const props = defineProps({
     default: 'light'
   }
 })
+
+const handleClick = (e) => {
+  console.log()
+  let url = e.item.url
+  if(url) router.push(url)
+}
 </script>
 
 <style scoped>
 .menu-item {
   margin-bottom: 10px;
 }
+</style>
+
+<style  >
+  .ant-menu-horizontal > .ant-menu-submenu-selected{
+    border-bottom: none;
+  }
 </style>

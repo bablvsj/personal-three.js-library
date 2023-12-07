@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position:relative">
     <div ref="canvasDom" id="eightA" style="height: 800px"></div>
     <div class="btn-group" style="position:absolute;top:20px;right:20px;display:flex;cursor: pointer;" >
       <div @click="changeCamera('A')" class="bu">设备A</div>
