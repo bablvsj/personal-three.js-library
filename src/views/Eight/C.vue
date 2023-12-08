@@ -44,7 +44,7 @@ const initialize = async () => {
 
       console.log(supported)
       if (!supported) {
-          btnText.value = 'Not Supported'
+          btnText.value = 'Not Supported WebXR'
         arButton.disabled = true
         return;
       }

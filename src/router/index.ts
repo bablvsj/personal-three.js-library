@@ -40,11 +40,18 @@ export const constantRoutes = [
   {
     path: '/',
     component: () => import('@/layout/index.vue'),
+    redirect:"/index",
     children: [
       {
         path: '/sevenA',
         name: 'SevenA',
         component: () => import('@/views/Seven/A.vue'),
+        hidden: true
+      },
+      {
+        path: '/index',
+        name: 'SystemIndex',
+        component: () => import('@/views/system/index.vue'),
         hidden: true
       },
       {
@@ -60,9 +67,9 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: '/sevenD',
-        name: 'SevenD',
-        component: () => import('@/views/Seven/D.vue'),
+        path: '/lightShadow',
+        name: 'LightShadow',
+        component: () => import('@/views/Seven/lightShadow.vue'),
         hidden: true
       },
       {

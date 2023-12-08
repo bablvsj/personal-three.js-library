@@ -68,14 +68,10 @@ const menuList = [
         type: 'group',
         label: '基础',
         children: [
-          // {
-          //   label: 'Option 3',
-          //   key: 'setting:3'
-          // },
           { label: '模型对象-F', url: '/sevenF', desc: '2222222222',key:"basic-1" },
           { label: '层级模型-B', url: '/sevenB', desc: '2222222222',key:"basic-2" },
           { label: '纹理贴图-A', url: '/sevenA', desc: '2222222222' ,key:"basic-3"},
-          { label: 'Gui-D', url: '/sevenD', desc: '2222222222' ,key:"basic-4"},
+          { label: '灯光阴影 - gui', url: '/lightShadow', desc: '灯光 + 阴影' ,key:"basic-4"},
           {
             label: '渲染器和前端UI-E',
             url: '/sevenE',
