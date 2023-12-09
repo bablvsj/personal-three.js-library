@@ -17,7 +17,7 @@ let stats;
 let grid;
 
 const wheels = [];
-import { ref, onMounted, onUnmounted, } from 'vue';
+import { ref, onMounted, onBeforeUnmount, } from 'vue';
 import Floors from '@/modules/Floors';
 import * as THREE from 'three';
 import gsap from 'gsap';
@@ -203,6 +203,10 @@ onMounted(() => {
     addLight()
     render()
     // createGUI()
+})
+
+onBeforeUnmount(()=>{
+    gui.hide()
 })
 
 

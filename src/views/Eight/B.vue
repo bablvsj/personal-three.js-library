@@ -7,7 +7,7 @@
 <script setup name="EightB">
 /* eslint-disable */
 
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
@@ -27,12 +27,15 @@ let actions, settings
 let singleStepMode = false
 let sizeOfNextStep = 0
 
+let panel ="";
+
 const init = () => {
   const container = document.getElementById('EightB')
 
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
   camera.position.set(2, 2, -5)
   camera.lookAt(0, 1, 0)
+
 
   clock = new THREE.Clock()
 
@@ -115,7 +118,7 @@ const init = () => {
 }
 
 const createPanel = () => {
-  const panel = new GUI({ width: 210 })
+  panel = new GUI({ width: 210 })
 
   const folder1 = panel.addFolder('Visibility')
   const folder2 = panel.addFolder('Activation/Deactivation')
@@ -390,6 +393,10 @@ onMounted(() => {
   init()
 
   // animate()
+})
+
+onBeforeUnmount(()=>{
+  panel.hide()
 })
 
 const addLight = () => {

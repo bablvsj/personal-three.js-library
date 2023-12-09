@@ -80,7 +80,8 @@ const menuList = [
           { label: '曲线几何体-C', url: '/sevenC', desc: '2222222222',key:"basic-6"},
           { label: 'sprite-H', url: '/sevenH', desc: '精灵模型' ,key:"basic-7"},
           { label: '射线Ray-I', url: '/sevenI', desc: '射线Ray、后处理(发光描边)',key:"basic-8" },
-          { label: '关键帧动画-G', url: '/sevenG', desc: '场景标注标签信息' ,key:"basic-9"}
+          { label: '关键帧动画-G', url: '/sevenG', desc: '场景标注标签信息' ,key:"basic-9"},
+          { label: 'Group Car', url: '/groupCar', desc: '根据group组成的car' ,key:"basic-10"},
         ]
       }
     ]
