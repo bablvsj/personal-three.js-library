@@ -126,6 +126,11 @@ export const constantRoutes = [
         path: '/groupCar',
         name: 'GroupCar',
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Seven/groupCar.vue')
+      },
+      {
+        path: '/groupCarPlus',
+        name: 'GroupCarPlus',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Seven/groupCarPlus.vue')
       }
     ]
   },
