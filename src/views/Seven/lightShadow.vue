@@ -101,8 +101,6 @@ spotLight.decay = 5;//光照强度
 const cameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
 scene.add(cameraHelper);
 
-
-
 const spotLightHelper = new THREE.SpotLightHelper(spotLight,0xffffff)
 scene.add(spotLightHelper)
 
@@ -116,21 +114,9 @@ plane.rotateX(-Math.PI/2);
 plane.position.y = 1
 plane.receiveShadow = true
 
-
-
-
-
-
-// const ambient = new THREE.AmbientLight(0xffffff, 2)  // 环境光
-// scene.add(ambient)
-// const directionalLight = new THREE.DirectionalLight(0xffffff, 2)  // 平行光
-// scene.add(directionalLight)
-
-
 const gui = new GUI()
 gui.domElement.style.right = '0px'
 gui.domElement.style.width = '300px'
-
 
 const obj = {
   color: 0x00ffff,
@@ -138,34 +124,13 @@ const obj = {
   bool: false
 }
 
-const commonPara = gui.addFolder('公共参数')
-commonPara.close()
-
-// commonPara
-//   .add(ambient, 'intensity', 0, 2.0)
-//   .name('环境光强度')
-//   .step(0.1)
-//   .onChange((value) => {
-//     console.log(value)
-//   })
 gui.add(spotLight, 'intensity', 0, 2).name('强度').step(0.001)
 gui.add(spotLight, 'angle', 0,  Math.PI / 2);
 gui.add(spotLight, 'decay', 0,  2).name('光源衰减').step(0.01);
-
 gui.add(spotLight.position,'x',-300,300)
 gui.add(spotLight.position,'y',0,500)
 gui.add(spotLight.position,'z',-300,300)
-// gui.add(spotLight.position,'z',0,300)
 gui.addColor(spotLight,'color')
-
-// 创建材质子菜单
-// const matFolder = gui.addFolder('材质')
-// matFolder.close()
-
-// matFolder.addColor(obj, 'color').onChange((value) => {
-//   material.color.set(value)
-// })
-
 
 // 渲染函数
 const render = () => {

@@ -131,6 +131,11 @@ export const constantRoutes = [
         path: '/groupCarPlus',
         name: 'GroupCarPlus',
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Seven/groupCarPlus.vue')
+      },
+      {
+        path: '/orthographicCamera',
+        name: 'OrthographicCamera',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Seven/orthographicCamera.vue')
       }
     ]
   },

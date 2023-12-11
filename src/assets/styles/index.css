@@ -16,3 +16,9 @@
 :root {
   --un-shadow-color: rgba(0,0,0,0.9);
 }
+
+/* 公共样式 */
+.cursor-point{
+  cursor: pointer;
+  font-size: 16px;
+}

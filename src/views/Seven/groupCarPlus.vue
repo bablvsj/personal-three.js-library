@@ -1,13 +1,17 @@
 <template>
   <div ref="canvasDom" id="sevenD" style="height: 800px"></div>
+  <div class="btn-group">
+    <FullscreenOutlined class="cursor-point" @click="handleFullScreen('open')" />
+    <!-- <FullscreenExitOutlined class="cursor-point" @click="handleFullScreen('close')" /> -->
+  </div>
 </template>
 
-<script lang="ts" setup name="GroupCar">
+<script lang="ts" setup name="GroupCarPlus">
 /* eslint-disable */
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue'
 import * as THREE from 'three'
 
-import Event from '@/modules/Viewer/Events'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 import { Group } from '@tweenjs/tween.js'
@@ -31,14 +35,11 @@ const planeGeometry = new THREE.PlaneGeometry(500, 500)
 const wlImg1 = new URL('@/assets/images/textTure/road.webp', import.meta.url).href
 const texture1 = textLoader.load(wlImg1)
 
-
-const plane = new THREE.Mesh(planeGeometry,new THREE.MeshBasicMaterial())
+const plane = new THREE.Mesh(planeGeometry, new THREE.MeshBasicMaterial())
 
 plane.material.map = texture1
 
-
 const material = new THREE.MeshNormalMaterial()
-
 
 const carGroup = new THREE.Group()
 
@@ -72,11 +73,11 @@ const carBody = new THREE.Group()
 const geometryBody = new THREE.BoxGeometry(15, 30, 4)
 const carBodyMesh = new THREE.Mesh(geometryBody, material)
 carBody.add(carBodyMesh)
-carBody.position.set(10,10,0)
+carBody.position.set(10, 10, 0)
 
 // 车顶
-const carRoofG = new THREE.CylinderGeometry(12,12,15,3,1,false,-Math.PI/2,Math.PI)
-const carRoof = new THREE.Mesh(carRoofG,material)
+const carRoofG = new THREE.CylinderGeometry(12, 12, 15, 3, 1, false, -Math.PI / 2, Math.PI)
+const carRoof = new THREE.Mesh(carRoofG, material)
 carRoof.rotation.z = -Math.PI / 2
 
 carBody.add(carRoof)
@@ -86,11 +87,10 @@ carGroup.add(frontTire, backTire, carBody)
 carGroup.position.z = 30
 carGroup.position.y = 30
 // carGroup.scale(2, 2, 2);
-scene.add(carGroup,plane)
+scene.add(carGroup, plane)
 
 carGroup.rotateX(-Math.PI / 3)
 // carGroup.rotate(-Math.PI / 3)
-
 
 // 渲染函数
 const clock = new THREE.Clock()
@@ -101,8 +101,8 @@ const render = () => {
   frontTire.rotation.x = time2
   // carTireGroup3.rotation.x = time2
   // carTireGroup4.rotation.x = time2
-  carGroup.position.y = (time * 30) % 250  - 200
-  carGroup.position.z =  - (time * 30) % 100  + 110
+  carGroup.position.y = ((time * 30) % 250) - 200
+  carGroup.position.z = (-(time * 30) % 100) + 110
   renderer.render(scene, camera)
   controls.update()
   requestAnimationFrame(render)
@@ -114,11 +114,52 @@ onMounted(() => {
   renderer.setClearColor(0xeeeeee, 1)
   render()
 })
+
+const handleFullScreen = (type) => {
+  let canvasDom = document.getElementById('sevenD')
+  const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+  if (!fullscreenElement) {
+    if (canvasDom.requestFullscreen) {
+      canvasDom.requestFullscreen()
+    } else if (canvas.webkitRequestFullscreen) {
+      canvasDom.webkitRequestFullscreen()
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen()
+    }
+  }
+}
+
+window.addEventListener('resize', () => {
+  // Update sizes
+  // sizes.width = window.innerWidth
+  // sizes.height = window.innerHeight
+
+  // // Update camera
+  // camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix()
+
+  // Update renderer
+  renderer.setSize(window.innerWidth, window.innerHeight)
+})
 </script>
 
 <style scoped>
 #three {
   height: 100%;
   width: 100%;
+}
+
+.btn-group {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  /* display: flex;
+  width: 40px; */
+  /* justify-content: space-between; */
+  /* z-index: 999; */
 }
 </style>

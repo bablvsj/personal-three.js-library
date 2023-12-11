@@ -21,8 +21,7 @@ ui: <https://demos.creative-tim.com/muse-vue-ant-design-dashboard-pro/documentat
 
 tabler
 
-
-
+shader 库: <https://www.shadertoy.com/view/XstGWn>
 
 ###### 模板
 
@@ -35,8 +34,6 @@ tabler
   /* eslint-disable */
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   import * as THREE from 'three'
-  
-  import Event from '@/modules/Viewer/Events'
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
   import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
   

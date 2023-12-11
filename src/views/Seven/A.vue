@@ -92,8 +92,8 @@ ttRed.repeat.y=50
 // uv两个方向纹理重复数量
 ttRed.repeat.set(1,1);
 
+// x y z 参考坐标轴
 const axis = new THREE.AxesHelper(1000)
-
 scene.add(axis)
 
 /**纹理坐标0~1之间随意定义*/
