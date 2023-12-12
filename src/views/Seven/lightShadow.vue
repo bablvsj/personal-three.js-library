@@ -77,7 +77,7 @@ scene.add(mesh)
 const spotLight = new THREE.SpotLight(0xffffff,0.355)
 scene.add(spotLight)
 spotLight.castShadow  = true
-spotLight.position.set(-50, 100, 0)
+spotLight.position.set(-50, 200, 0)
 // spotLight.intensity = 100.0;//光照强度
 spotLight.angle = 0.4;//光照角度
 spotLight.decay = 5;//光照强度
@@ -131,12 +131,14 @@ gui.add(spotLight.position,'x',-300,300)
 gui.add(spotLight.position,'y',0,500)
 gui.add(spotLight.position,'z',-300,300)
 gui.addColor(spotLight,'color')
-
+const clock = new THREE.Clock()
 // 渲染函数
 const render = () => {
+  const time = clock.getElapsedTime()
   if (obj.bool) mesh.rotateY(0.11)
   renderer.render(scene, camera)
   controls.update()
+  mesh.position.y = Math.sin(time) * 50 + 60
   requestAnimationFrame(render)
 }
 
