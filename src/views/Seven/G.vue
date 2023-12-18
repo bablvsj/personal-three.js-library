@@ -1,7 +1,7 @@
 <!-- eslint-disable indent -->
 
 <template>
-    <div ref="canvasDom" id="sevenG" style="height: 800px;"></div>
+    <div ref="canvasDom" class="canvas-container"></div>
     <div class="pos" style="position: absolute;top:100px;right:0;font-size: 16px;display: flex;z-index:999;padding: 20px;">
         <div @click="controlClipAction('play')" class="cursor-point">播放</div>
         <div @click="controlClipAction('wait')" class="cursor-point" style="margin-left: 10px;">{{ waitText }}</div>
@@ -44,6 +44,7 @@ import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass.js';   // S
 // 引入CSS2渲染器CSS2DRenderer和CSS2模型对象CSS2DObject
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
+const canvasDom = ref(null)
 
 
 let scene, camera, renderer, composer;
@@ -199,7 +200,7 @@ const render = () => {
 }
 
 onMounted(() => {
-    document.getElementById("sevenG")?.appendChild(renderer.domElement);
+    canvasDom.value?.appendChild(renderer.domElement);
     addLight()
     render()
     // createGUI()

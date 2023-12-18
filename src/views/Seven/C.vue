@@ -1,6 +1,6 @@
 <template>
     <div style="position: relative;">
-        <div ref="canvasDom" id="sevenC" style="height: 800px;z-index:1 ;position: relative;"></div>
+        <div ref="canvasDom" class="canvas-container"></div>
         <!-- <div style="position: absolute;z-index:999;top:0;right: 0;cursor: pointer;" @click="exportCanvas">导出</div> -->
     </div>
 </template>
@@ -19,6 +19,7 @@ import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
 import { startProgress, closeProgress } from "@/utils/nprogress"
 
 
+const canvasDom = ref(null)
 //场景
 const scene = new THREE.Scene()
 
@@ -552,7 +553,7 @@ onMounted(() => {
     createShapeHoles()   // 多边形 内孔
     // initModel()
     addLight()
-    document.getElementById("sevenC")?.appendChild(renderer.domElement);
+    canvasDom.value?.appendChild(renderer.domElement);
     render()
 })
 

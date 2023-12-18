@@ -1,5 +1,5 @@
 <template>
-    <div ref="canvasDom" id="sevenF" style="height: 800px;"></div>
+    <div ref="canvasDom" class="canvas-container"></div>
 </template>
   
 <script lang="ts" setup name="SevenF">
@@ -14,6 +14,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
 
+const canvasDom = ref(null)
 //场景
 const scene = new THREE.Scene()
 
@@ -215,7 +216,7 @@ const render = () => {
 
 onMounted(() => {
     //渲染
-    document.getElementById("sevenF")?.appendChild(renderer.domElement);
+    canvasDom.value?.appendChild(renderer.domElement);
     // 设置背景颜色并启用透明度
     renderer.setClearColor(0xffc0cb, 0.5);
     render()

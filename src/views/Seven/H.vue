@@ -1,7 +1,7 @@
 <!-- eslint-disable indent -->
 
 <template>
-    <div ref="canvasDom" id="sevenH" style="height: 800px;"></div>
+    <div ref="canvasDom" class="canvas-container"></div>
 </template>
   
 <script setup name="SevenH" >
@@ -21,6 +21,8 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+
+const canvasDom = ref(null)
 
 //场景
 const scene = new THREE.Scene()
@@ -201,7 +203,7 @@ const render = () => {
 
 
 onMounted(() => {
-    document.getElementById("sevenH")?.appendChild(renderer.domElement);
+    canvasDom.value?.appendChild(renderer.domElement);
     renderer.setClearColor(0xffc0cb, 0.5);
     render()
     addLight()

@@ -1,5 +1,5 @@
 <template>
-  <div ref="canvasDom" id="sevenD" style="height: 800px"></div>
+  <div ref="canvasDom"  class="canvas-container"></div>
   <div style="position:absolute;top:60px;right:20px;display:flex;width:40px;justify-content:space-between;">
     <FullscreenOutlined class="cursor-point" />
     <FullscreenExitOutlined class="cursor-point" />
@@ -113,7 +113,7 @@ const render = () => {
 }
 
 onMounted(() => {
-  document.getElementById('sevenD')?.appendChild(renderer.domElement)
+  canvasDom.value?.appendChild(renderer.domElement)
   // 设置背景颜色并启用透明度
   renderer.setClearColor(0xeeeeee, 1)
   render()

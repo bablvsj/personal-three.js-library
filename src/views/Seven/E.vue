@@ -1,6 +1,6 @@
 <template>
     <div style="position: relative;">
-        <div ref="canvasDom" id="sevenE" style="height: 800px;z-index:1 ;position: relative;"></div>
+        <div ref="canvasDom" class="canvas-container" style="z-index:1 ;position: relative;"></div>
         <div style="position: absolute;z-index:999;top:0;right: 0;cursor: pointer;font-size: 20px;margin:0 20px;"
             @click="exportCanvas">导出</div>
     </div>
@@ -19,6 +19,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
 import { startProgress, closeProgress } from "@/utils/nprogress"
 
+const canvasDom = ref(null)
 
 //场景
 const scene = new THREE.Scene()
@@ -133,7 +134,7 @@ onMounted(() => {
     startProgress()
     initModel()
     addLight()
-    document.getElementById("sevenE")?.appendChild(renderer.domElement);
+    canvasDom.value?.appendChild(renderer.domElement);
     render()
 
 

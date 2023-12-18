@@ -1,5 +1,5 @@
 <template>
-  <div ref="canvasDom" id="sevenD" style="height: 800px"></div>
+  <div ref="canvasDom" class="canvas-container"></div>
   <div class="btn-group">
     <FullscreenOutlined class="cursor-point" @click="handleFullScreen('open')" />
     <!-- <FullscreenExitOutlined class="cursor-point" @click="handleFullScreen('close')" /> -->
@@ -17,6 +17,8 @@ import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 import { Group } from '@tweenjs/tween.js'
 // import { Group } from '@tweenjs/tween.js'
 // import { Theme } from 'ant-design-vue'
+
+const canvasDom = ref(null)
 
 const textLoader = new THREE.TextureLoader() // 文件加载器
 //场景
@@ -109,7 +111,7 @@ const render = () => {
 }
 
 onMounted(() => {
-  document.getElementById('sevenD')?.appendChild(renderer.domElement)
+  canvasDom.value?.appendChild(renderer.domElement)
   // 设置背景颜色并启用透明度
   renderer.setClearColor(0xeeeeee, 1)
   render()
