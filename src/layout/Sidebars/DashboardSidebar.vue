@@ -70,7 +70,7 @@ const menuList = [
         children: [
           { label: '模型对象-F', url: '/sevenF', desc: '2222222222',key:"basic-1" },
           { label: '层级模型-B', url: '/sevenB', desc: '2222222222',key:"basic-2" },
-          { label: '纹理贴图-A', url: '/sevenA', desc: '2222222222' ,key:"basic-3"},
+          { label: '纹理贴图-A', url: '/textureMapping', desc: '2222222222' ,key:"basic-3"},
           { label: '灯光阴影 - gui', url: '/lightShadow', desc: '灯光 + 阴影' ,key:"basic-4"},
           {
             label: '渲染器和前端UI-E',

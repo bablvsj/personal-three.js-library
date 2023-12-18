@@ -22,3 +22,7 @@
   cursor: pointer;
   font-size: 16px;
 }
+
+.canvas-container{
+  height: 400px;
+}

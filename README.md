@@ -1,29 +1,35 @@
-致敬 源地址： <https://stevenfeng.cn/threejs-demo/>
+## 特性
 
-ant design template <https://www.creative-tim.com/product/muse-vue-ant-design-dashboard-pro>   <https://github.com/creativetimofficial/muse-vue-ant-design-dashboard>
+本项目基于 Vue3 + Ts/Js + Vite +  [Ant Design Vue](https://antdv.com/components/overview) + Three.js 开发。
 
-图解webgl <https://www.cnblogs.com/wanbo/p/6754066.html>
+## Run
 
-<http://www.hewebgl.com/article/getarticle/50>
+```node
+npm install 
+npm run dev
+```
 
-vite脚手架 SSG构建静态网站 virtual:generated-layouts
+## Three.js开发资源
 
-cron 表达式 定时任务
+#### shader库
 
-1206---
+ <https://www.shadertoy.com/view/XstGWn>
 
-antd4  : <https://antdv.com/components/typography>
-<https://store.antdv.com/home>
+## 推荐文章
 
-three.js <https://kwii.cc/threejs-basis/>
+1. 图解webgl <https://www.cnblogs.com/wanbo/p/6754066.html>
+2. WebGI中文网 <http://www.hewebgl.com/article/getarticle/50>
+3. Three.js journey Notes 第一部分：基础 <https://kwii.cc/threejs-basis/>
 
-ui: <https://demos.creative-tim.com/muse-vue-ant-design-dashboard-pro/documentation/layout/grid/>
+## 致敬
 
-tabler
+1. 最开始看到掘金博主[蝴蝶刀砍手大师](<https://stevenfeng.cn/threejs-demo/>)的文章[基于vue3+threejs实现可视化大屏](https://juejin.cn/post/7235906062301085757)，开始对Three.js感兴趣。
 
-shader 库: <https://www.shadertoy.com/view/XstGWn>
+<!-- 个人操作：
+ git提交操作：https://blog.csdn.net/qq_43183942/article/details/132236316
+ 还不错的后台UI：https://www.creative-tim.com/product/muse-vue-ant-design-dashboard-pro -->
 
-###### 模板
+<!-- ###### 模板
 
 ```js
 <template>
@@ -49,7 +55,6 @@ shader 库: <https://www.shadertoy.com/view/XstGWn>
   camera.position.set(20, 100, 300) //镜头视角点设置
   camera.lookAt(0, 20, 100)
   const controls = new OrbitControls(camera, renderer.domElement)
-
 
   // scene.add(mesh
 
@@ -77,6 +82,6 @@ shader 库: <https://www.shadertoy.com/view/XstGWn>
     height: 100%;
     width: 100%;
   }
-  </style>
+  </style> -->
   
-```
+<!-- ``` -->

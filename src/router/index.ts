@@ -43,9 +43,9 @@ export const constantRoutes = [
     redirect:"/index",
     children: [
       {
-        path: '/sevenA',
-        name: 'SevenA',
-        component: () => import('@/views/Seven/A.vue'),
+        path: '/textureMapping',
+        name: 'TextureMapping',
+        component: () => import('@/views/Seven/textureMapping.vue'),
         hidden: true
       },
       {

@@ -1,8 +1,8 @@
 <template>
-    <div ref="canvasDom" id="sevenA" style="height: 800px;"></div>
+    <div ref="canvasDom" class="canvas-container" ></div>
 </template>
   
-<script lang="ts" setup name="SevenA">
+<script lang="ts" setup name="TextureMapping">
 /* eslint-disable */
 import { ref, onMounted } from 'vue';
 import Floors from '@/modules/Floors';
@@ -16,6 +16,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
 
 
+const canvasDom = ref(null)
 const scene = new THREE.Scene()  //场景
 
 
@@ -228,7 +229,7 @@ const render = () => {
 
 onMounted(() => {
     //渲染
-    document.getElementById("sevenA")?.appendChild(renderer.domElement);
+    canvasDom.value?.appendChild(renderer.domElement);
 
     // 设置背景颜色并启用透明度
     renderer.setClearColor(0xffc0cb, 0.5);
@@ -236,11 +237,5 @@ onMounted(() => {
 
 })
 </script>
-  
-<style scoped>
-#three {
-    height: 100%;
-    width: 100%;
-}
-</style>
+
   
