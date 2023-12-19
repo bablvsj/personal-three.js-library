@@ -10,7 +10,7 @@ import Nav from '@/components/Nav.vue';
 <style lang="scss">
 body,
 html {
-  background-color: #000;
+  background-color: skyblue;
 }
 
 body {
