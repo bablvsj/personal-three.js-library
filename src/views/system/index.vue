@@ -1,6 +1,10 @@
 <template>
   <div style="position: relative">
-    <div ref="canvasDom" id="sevenE" style="height: 800px; z-index: 1; position: relative"></div>
+    <div
+      ref="canvasDom"
+      class="canvas-container"
+      style="height: 800px; z-index: 1; position: relative"
+    ></div>
     <!-- <div style="position: absolute;z-index:999;top:0;right: 0;cursor: pointer;font-size: 20px;margin:0 20px;"
             @click="exportCanvas">导出</div> -->
   </div>
@@ -18,6 +22,10 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 import { startProgress, closeProgress } from '@/utils/nprogress'
+
+const canvasDom = ref(null)
+
+let circle1, circle2, circle3, circle4, hub1, hub2, hub3, hub4
 
 //场景
 const scene = new THREE.Scene()
@@ -64,18 +72,23 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 const controls = new OrbitControls(camera, renderer.domElement)
 
 // 渲染函数
+let rotationX = 0.11
 const render = () => {
   textureCube.colorSpace = THREE.SRGBColorSpace
   renderer.render(scene, camera)
   controls.update()
   requestAnimationFrame(render)
+
+  if (circle1) circle1.rotation.x -= rotationX
+  // if (circle2) circle2.rotation.x -= rotationX
+  if (circle3) circle3.rotation.x -= rotationX
 }
 
 onMounted(() => {
   startProgress()
   initModel()
   addLight()
-  document.getElementById('sevenE')?.appendChild(renderer.domElement)
+  canvasDom?.value.appendChild(renderer.domElement)
   render()
 })
 
@@ -101,6 +114,7 @@ const addLight = () => {
   const light9 = new THREE.DirectionalLight(0xffffff, 0.3)
   light9.position.set(-50, 100, 0)
   scene.add(light, light2, light3, light4, light5, light6, light7, light8, light9, light10)
+  // scene.add(light,light2)
 }
 
 const exportCanvas = () => {
@@ -116,42 +130,63 @@ const initModel = () => {
   //加载gltf模型
   const loader = new GLTFLoader()
 
+  // ../../../public/models/porsche_911_930_turbo.glb
   loader.load(
-    `../../../public/models/porsche_911_930_turbo.glb`,
+    `src/assets/models/glb/mazda_rx-7.glb`,
     (gltf) => {
       //传id让其点击不同商品展示不同模型 id对应商品的id
       console.log(gltf)
       const bmw = gltf.scene
-      const mesh = gltf.scene.children[0] //获取Mesh
+      // const mesh = gltf.scene.children[0] //获取Mesh
       console.log(mesh)
       bmw.scale.set(20, 20, 20) //模型缩放
 
-      gltf.scene.traverse(function (obj) {
-        if (obj.isMesh) {
-        //   console.log(obj.material)
+      // gltf.scene.traverse(function (obj) {
+      //   console.log(obj)
+      // //   if (obj.isMesh) {
+      // //     // 模型边线设置
+      // //     const edges = new THREE.EdgesGeometry(obj.geometry);
+      // //     const edgesMaterial = new THREE.LineBasicMaterial({
+      // //         color: 0x00ffff,
+      // //     })
+      // //     const line = new THREE.LineSegments(edges, edgesMaterial);
+      // //     obj.add(line);
+      // //   }
+      // })
 
-        //   obj.material = new THREE.MeshPhongMaterial({
-        //     side: THREE.DoubleSide,
-        //     transparent: true,
-        //     depthTest: false,
-        //     depthWrite: true, // 无法被选择，鼠标穿透
-        //     color: 0xff0a0a,
-        //     opacity: 0.5
-        //   })
-
-         
-          // 模型边线设置
-          const edges = new THREE.EdgesGeometry(obj.geometry);
-          const edgesMaterial = new THREE.LineBasicMaterial({
-              color: 0x00ffff,
-          })
-          const line = new THREE.LineSegments(edges, edgesMaterial);
-          obj.add(line);
-        }
-      })
+      // gltf.scene.traverse(function (obj) {
+      //   if (obj.isMesh) {
+      //     // 模型边线设置
+      //     const edges = new THREE.EdgesGeometry(obj.geometry);
+      //     const edgesMaterial = new THREE.LineBasicMaterial({
+      //         color: 0x00ffff,
+      //     })
+      //     const line = new THREE.LineSegments(edges, edgesMaterial);
+      //     obj.add(line);
+      //   }
+      // })
       // scene.add(gltf.scene);
-
       scene.add(bmw) //将整个模型组添加到场景中
+      circle2 = scene.getObjectByName('wheelRR001')
+      circle1 = scene.getObjectByName('wheelFR')
+      circle3 = scene.getObjectByName('wheelFR001')
+
+      // let vector = circle2.position.clone()
+      // circle2.localToWorld(vector)
+
+      console.log(circle2.position)
+
+      // 获取世界坐标
+      let worldPosition = new THREE.Vector3()
+      console.log(circle2.getWorldPosition(worldPosition))
+
+      //       // 顶点坐标加上mesh的世界矩阵
+      // var vector = mesh.geometry.vertices[i].clone();
+      // vector.applyMatrix4( mesh.matrixWorld );
+
+      // // 利用mesh的localToWorld方法
+      // var vector = mesh.position.clone();
+      // mesh.localToWorld( vector );
     },
     (xhr) => {
       const percent = xhr.loaded / xhr.total

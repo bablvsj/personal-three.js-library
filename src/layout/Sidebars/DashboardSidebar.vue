@@ -108,6 +108,25 @@ const menuList = [
         ]
       }
     ]
+  },
+  {
+    key: 'cool',
+    icon: () => h(SettingOutlined),
+    label: 'Cool',
+    title: 'Cool',
+    children: [
+      {
+        type: 'group',
+        label: '酷',
+        children: [
+          // {
+          //   label: 'Option 2',
+          //   key: 'setting:2'
+          // },
+          { label: '飞机发动机', url: '/cool/mechine', desc: '相机模型' ,key:"cool-1"},
+        ]
+      }
+    ]
   }
   // {
   //   key: 'alipay',

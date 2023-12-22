@@ -11,9 +11,13 @@ npm run dev
 
 ## Three.js开发资源
 
-#### shader库
+### shader库
 
  <https://www.shadertoy.com/view/XstGWn>
+
+### GLTF
+
+gltf 在线编辑器 ： <https://gltf.nsdt.cloud/>
 
 ## 推荐文章
 
@@ -30,7 +34,9 @@ npm run dev
  git提交操作：https://blog.csdn.net/qq_43183942/article/details/132236316
  还不错的后台UI：https://www.creative-tim.com/product/muse-vue-ant-design-dashboard-pro -->
 
-##### git 操作
+## 工具
+
+### git
 
  ```
  修改远程仓库地址

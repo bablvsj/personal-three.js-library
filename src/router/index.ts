@@ -139,6 +139,19 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/cool',
+    component: () => import('@/layout/index.vue'),
+    // redirect:"/index",
+    children: [
+      {
+        path: 'mechine',
+        name: 'Mechine',
+        component: () => import('@/views/coolModels/mechine.vue'),
+        hidden: true
+      },
+    ]
+  }
  
 ]
 
