@@ -22,37 +22,42 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 import { startProgress, closeProgress } from '@/utils/nprogress'
+import { TextureLoader } from 'three'
 
 const canvasDom = ref(null)
 
-let circle1, circle2, circle3, circle4, hub1, hub2, hub3, hub4
+let circle1, circle2, circleend, circleend1, circleend2,car;
+const wheels = [],
+  endWheels = []
 
 //场景
 const scene = new THREE.Scene()
 
 //镜头
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000)
 camera.position.set(0, 200, 200) //镜头视角点设置
 camera.lookAt(0, 0, 0)
 
-const wlRed = new URL('@/assets/images/textTure/wenli_red.jpg', import.meta.url).href
+const wlRed = new URL('@/assets/images/textTure/hardwood2.jpg', import.meta.url).href
 const wlImg1 = new URL('@/assets/images/textTure/wenli_gray.jpg', import.meta.url).href
 const wlImg2 = new URL('@/assets/images/textTure/wenli2.jpg', import.meta.url).href
 const wlImg3 = new URL('@/assets/images/textTure/wenli3.jpg', import.meta.url).href
 
-const textureCube = new THREE.CubeTextureLoader().load([
-  wlRed,
-  wlRed,
-  wlImg1,
-  wlImg1,
-  wlImg2,
-  wlImg2
-])
+let textLoader = new THREE.TextureLoader()
 
-const geometry = new THREE.PlaneGeometry(100, 200, 50)
+let texture = textLoader.load(wlRed)
+
+
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping;
+texture.repeat.set(6,1);
+
+const geometry = new THREE.PlaneGeometry(1000, 10000, 500)
 const material = new THREE.MeshLambertMaterial({
   color: 0xeeeeee,
-  side: THREE.DoubleSide
+  side: THREE.DoubleSide,
+  map: texture
+  
 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
@@ -71,26 +76,55 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 
 const controls = new OrbitControls(camera, renderer.domElement)
 
+const arrowKeys = {
+  ArrowUp: 'up',
+  ArrowDown: 'down',
+  ArrowLeft: 'left',
+  ArrowRight: 'right'
+}
+
+let rotationX = 0.1
+
+const handleKeydown = (event) => {
+  if (arrowKeys[event.key]) {
+    let keys = arrowKeys[event.key]
+
+    if (keys == 'up') {
+      rotationX = -1
+    } else if (keys == 'down') {
+      rotationX = 1
+    } else {
+      let isLeft = keys == 'left' ? -0.5 : 0.5
+      rotationX = 0
+
+      // wheels.rotation.y = isLeft
+      // wheels.rotation.y = isLeft
+
+      for (let i = 0; i < wheels.length; i++) {
+      wheels[i].rotation.y += isLeft
+    }
+    }
+
+    const time = -performance.now() / 1000
+
+    for (let i = 0; i < wheels.length; i++) {
+      wheels[i].rotation.x += rotationX
+    }
+    for (let i = 0; i < endWheels.length; i++) {
+      endWheels[i].rotation.x -= rotationX
+    }
+
+    car.position.z -= rotationX
+  }
+}
+
 // 渲染函数
-let rotationX = 0.11
 const render = () => {
-  textureCube.colorSpace = THREE.SRGBColorSpace
+  // textureCube.colorSpace = THREE.SRGBColorSpace
   renderer.render(scene, camera)
   controls.update()
   requestAnimationFrame(render)
-
-  if (circle1) circle1.rotation.x -= rotationX
-  // if (circle2) circle2.rotation.x -= rotationX
-  if (circle3) circle3.rotation.x -= rotationX
 }
-
-onMounted(() => {
-  startProgress()
-  initModel()
-  addLight()
-  canvasDom?.value.appendChild(renderer.domElement)
-  render()
-})
 
 const addLight = () => {
   const light = new THREE.DirectionalLight(0xffffff, 1)
@@ -132,61 +166,19 @@ const initModel = () => {
 
   // ../../../public/models/porsche_911_930_turbo.glb
   loader.load(
-    `src/assets/models/glb/mazda_rx-7.glb`,
+    `src/assets/models/glb/mazdarx7.glb`,
     (gltf) => {
-      //传id让其点击不同商品展示不同模型 id对应商品的id
-      console.log(gltf)
       const bmw = gltf.scene
-      // const mesh = gltf.scene.children[0] //获取Mesh
-      console.log(mesh)
       bmw.scale.set(20, 20, 20) //模型缩放
-
-      // gltf.scene.traverse(function (obj) {
-      //   console.log(obj)
-      // //   if (obj.isMesh) {
-      // //     // 模型边线设置
-      // //     const edges = new THREE.EdgesGeometry(obj.geometry);
-      // //     const edgesMaterial = new THREE.LineBasicMaterial({
-      // //         color: 0x00ffff,
-      // //     })
-      // //     const line = new THREE.LineSegments(edges, edgesMaterial);
-      // //     obj.add(line);
-      // //   }
-      // })
-
-      // gltf.scene.traverse(function (obj) {
-      //   if (obj.isMesh) {
-      //     // 模型边线设置
-      //     const edges = new THREE.EdgesGeometry(obj.geometry);
-      //     const edgesMaterial = new THREE.LineBasicMaterial({
-      //         color: 0x00ffff,
-      //     })
-      //     const line = new THREE.LineSegments(edges, edgesMaterial);
-      //     obj.add(line);
-      //   }
-      // })
-      // scene.add(gltf.scene);
       scene.add(bmw) //将整个模型组添加到场景中
-      circle2 = scene.getObjectByName('wheelRR001')
-      circle1 = scene.getObjectByName('wheelFR')
-      circle3 = scene.getObjectByName('wheelFR001')
+      car = scene.getObjectByName("Sketchfab_model")
+      wheels.push(scene.getObjectByName('wheelFR001'), scene.getObjectByName('wheelFR'))
 
-      // let vector = circle2.position.clone()
-      // circle2.localToWorld(vector)
-
-      console.log(circle2.position)
-
-      // 获取世界坐标
-      let worldPosition = new THREE.Vector3()
-      console.log(circle2.getWorldPosition(worldPosition))
-
-      //       // 顶点坐标加上mesh的世界矩阵
-      // var vector = mesh.geometry.vertices[i].clone();
-      // vector.applyMatrix4( mesh.matrixWorld );
-
-      // // 利用mesh的localToWorld方法
-      // var vector = mesh.position.clone();
-      // mesh.localToWorld( vector );
+      endWheels.push(
+        scene.getObjectByName('wheelRR001_bl004_0'),
+        scene.getObjectByName('wheelRR001_chrome005_0'),
+        scene.getObjectByName('wheelRR001_tire004_0')
+      )
     },
     (xhr) => {
       const percent = xhr.loaded / xhr.total
@@ -204,6 +196,16 @@ window.onresize = function () {
   camera.aspect = width / height
   camera.updateProjectionMatrix()
 }
+
+onMounted(() => {
+  startProgress()
+  initModel()
+  addLight()
+  canvasDom?.value.appendChild(renderer.domElement)
+  render()
+
+  window.addEventListener('keydown', handleKeydown)
+})
 </script>
 
 <style scoped>
