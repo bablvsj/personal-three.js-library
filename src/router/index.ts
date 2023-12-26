@@ -150,6 +150,12 @@ export const constantRoutes = [
         component: () => import('@/views/coolModels/mechine.vue'),
         hidden: true
       },
+      {
+        path: 'freeFall',
+        name: 'FreeFall',
+        component: () => import('@/views/coolModels/freeFall.vue'),
+        hidden: true
+      },
     ]
   }
  

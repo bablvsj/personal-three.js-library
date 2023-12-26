@@ -59,7 +59,7 @@ const menuList = [
     url:"/home"
   },
   {
-    key: 'app',
+    key: 'basic',
     icon: () => h(AppstoreOutlined),
     label: 'Basic',
     title: 'Basic',
@@ -124,6 +124,7 @@ const menuList = [
           //   key: 'setting:2'
           // },
           { label: '飞机发动机', url: '/cool/mechine', desc: '相机模型' ,key:"cool-1"},
+          { label: '自由落体', url: '/cool/freeFall', desc: '自由落体' ,key:"cool-2"},
         ]
       }
     ]
