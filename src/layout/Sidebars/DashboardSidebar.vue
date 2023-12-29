@@ -68,19 +68,19 @@ const menuList = [
         type: 'group',
         label: '基础',
         children: [
-          { label: '模型对象-F', url: '/sevenF', desc: '2222222222',key:"basic-1" },
-          { label: '层级模型-B', url: '/sevenB', desc: '2222222222',key:"basic-2" },
+          { label: '模型对象-F', url: '/basicF', desc: '2222222222',key:"basic-1" },
+          { label: '层级模型-B', url: '/basicB', desc: '2222222222',key:"basic-2" },
           { label: '纹理贴图-A', url: '/textureMapping', desc: '2222222222' ,key:"basic-3"},
           { label: '灯光阴影 - gui', url: '/lightShadow', desc: '灯光 + 阴影' ,key:"basic-4"},
           {
             label: '渲染器和前端UI-E',
-            url: '/sevenE',
+            url: '/basicE',
             desc: 'canvas导出图片、模型进度条、渲染部分配置、GLTF模型加载 ',key:"basic-5"
           },
-          { label: '曲线几何体-C', url: '/sevenC', desc: '2222222222',key:"basic-6"},
-          { label: 'sprite-H', url: '/sevenH', desc: '精灵模型' ,key:"basic-7"},
-          { label: '射线Ray-I', url: '/sevenI', desc: '射线Ray、后处理(发光描边)',key:"basic-8" },
-          { label: '关键帧动画-G', url: '/sevenG', desc: '场景标注标签信息' ,key:"basic-9"},
+          { label: '曲线几何体-C', url: '/basicC', desc: '2222222222',key:"basic-6"},
+          { label: 'sprite-H', url: '/basicH', desc: '精灵模型' ,key:"basic-7"},
+          { label: '射线Ray-I', url: '/basicI', desc: '射线Ray、后处理(发光描边)',key:"basic-8" },
+          { label: '关键帧动画-G', url: '/basicG', desc: '场景标注标签信息' ,key:"basic-9"},
           { label: 'Group Car', url: '/groupCar', desc: '根据group组成的car' ,key:"basic-10"},
           { label: 'Group Car plus', url: '/groupCarPlus', desc: '根据group组成的car' ,key:"basic-11"},
           { label: 'Orthographic Camera', url: '/orthographicCamera', desc: '正交相机' ,key:"basic-12"},
@@ -125,6 +125,25 @@ const menuList = [
           // },
           { label: '飞机发动机', url: '/cool/mechine', desc: '相机模型' ,key:"cool-1"},
           { label: '自由落体', url: '/cool/freeFall', desc: '自由落体' ,key:"cool-2"},
+        ]
+      }
+    ]
+  },
+  {
+    key: 'journey',
+    icon: () => h(SettingOutlined),
+    label: 'Journey',
+    title: 'Journey',
+    children: [
+      {
+        type: 'group',
+        label: '酷',
+        children: [
+          // {
+          //   label: 'Option 2',
+          //   key: 'setting:2'
+          // },
+          { label: 'Deom', url: '/journey/demo', desc: 'demo' ,key:"journey-1"},
         ]
       }
     ]

@@ -45,7 +45,7 @@ export const constantRoutes = [
       {
         path: '/textureMapping',
         name: 'TextureMapping',
-        component: () => import('@/views/Seven/textureMapping.vue'),
+        component: () => import('@/views/basic/textureMapping.vue'),
         hidden: true
       },
       {
@@ -55,51 +55,51 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: '/sevenB',
-        name: 'SevenB',
-        component: () => import('@/views/Seven/B.vue'),
+        path: '/basicB',
+        name: 'BasicB',
+        component: () => import('@/views/basic/B.vue'),
         hidden: true
       },
       {
-        path: '/sevenC',
-        name: 'SevenC',
-        component: () => import('@/views/Seven/C.vue'),
+        path: '/basicC',
+        name: 'BasicC',
+        component: () => import('@/views/basic/C.vue'),
         hidden: true
       },
       {
         path: '/lightShadow',
         name: 'LightShadow',
-        component: () => import('@/views/Seven/lightShadow.vue'),
+        component: () => import('@/views/basic/lightShadow.vue'),
         hidden: true
       },
       {
-        path: '/sevenE',
-        name: 'SevenE',
-        component: () => import('@/views/Seven/E.vue'),
+        path: '/basicE',
+        name: 'BasicE',
+        component: () => import('@/views/basic/E.vue'),
         hidden: true
       },
       {
-        path: '/sevenF',
-        name: 'SevenF',
-        component: () => import('@/views/Seven/F.vue'),
+        path: '/basicF',
+        name: 'BasicF',
+        component: () => import('@/views/basic/F.vue'),
         hidden: true
       },
       {
-        path: '/sevenG',
-        name: 'SevenG',
-        component: () => import('@/views/Seven/G.vue'),
+        path: '/basicG',
+        name: 'BasicG',
+        component: () => import('@/views/basic/G.vue'),
         hidden: true
       },
       {
-        path: '/sevenH',
-        name: 'SevenH',
-        component: () => import('@/views/Seven/H.vue'),
+        path: '/basicH',
+        name: 'BasicH',
+        component: () => import('@/views/basic/H.vue'),
         hidden: true
       },
       {
-        path: '/sevenI',
-        name: 'SevenI',
-        component: () => import('@/views/Seven/I.vue'),
+        path: '/basicI',
+        name: 'BasicI',
+        component: () => import('@/views/basic/I.vue'),
         hidden: true
       },
       {
@@ -125,17 +125,17 @@ export const constantRoutes = [
       {
         path: '/groupCar',
         name: 'GroupCar',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Seven/groupCar.vue')
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/basic/groupCar.vue')
       },
       {
         path: '/groupCarPlus',
         name: 'GroupCarPlus',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Seven/groupCarPlus.vue')
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/basic/groupCarPlus.vue')
       },
       {
         path: '/orthographicCamera',
         name: 'OrthographicCamera',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Seven/orthographicCamera.vue')
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/basic/orthographicCamera.vue')
       }
     ]
   },
@@ -156,6 +156,19 @@ export const constantRoutes = [
         component: () => import('@/views/coolModels/freeFall.vue'),
         hidden: true
       },
+    ]
+  },
+  {
+    path: '/journey',
+    component: () => import('@/layout/index.vue'),
+    // redirect:"/index",
+    children: [
+      {
+        path: 'demo',
+        name: 'Mechine',
+        component: () => import('@/views/journey/A.vue'),
+        hidden: true
+      }
     ]
   }
  

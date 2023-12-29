@@ -17,15 +17,15 @@ const router = useRouter();
 
 const navList = [
   { label: "Home", url: "/home", desc: "2222222222" },
-  { label: "模型对象-F", url: "/sevenF", desc: "2222222222" },
-  { label: "层级模型-B", url: "/sevenB", desc: "2222222222" },
-  { label: "纹理贴图-A", url: "/sevenA", desc: "2222222222" },
-  { label: "Gui-D", url: "/sevenD", desc: "2222222222" },
-  { label: "渲染器和前端UI-E", url: "/sevenE", desc: "canvas导出图片、模型进度条、渲染部分配置、GLTF模型加载 " },
-  { label: "曲线几何体-C", url: "/sevenC", desc: "2222222222" },
-  { label: "sprite-H", url: "/sevenH", desc: "精灵模型" },
-  { label: "射线Ray-I", url: "/sevenI", desc: "射线Ray、后处理(发光描边)" },
-  { label: "关键帧动画-G", url: "/sevenG", desc: "场景标注标签信息" },
+  { label: "模型对象-F", url: "/basicF", desc: "2222222222" },
+  { label: "层级模型-B", url: "/basicB", desc: "2222222222" },
+  { label: "纹理贴图-A", url: "/basicA", desc: "2222222222" },
+  { label: "Gui-D", url: "/basicD", desc: "2222222222" },
+  { label: "渲染器和前端UI-E", url: "/basicE", desc: "canvas导出图片、模型进度条、渲染部分配置、GLTF模型加载 " },
+  { label: "曲线几何体-C", url: "/basicC", desc: "2222222222" },
+  { label: "sprite-H", url: "/basicH", desc: "精灵模型" },
+  { label: "射线Ray-I", url: "/basicI", desc: "射线Ray、后处理(发光描边)" },
+  { label: "关键帧动画-G", url: "/basicG", desc: "场景标注标签信息" },
 
 ];
 

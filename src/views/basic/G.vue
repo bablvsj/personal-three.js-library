@@ -1,17 +1,23 @@
 <!-- eslint-disable indent -->
 
 <template>
-    <div ref="canvasDom" id="sevenI" style="height: 800px;"></div>
+    <div ref="canvasDom" class="canvas-container"></div>
+    <div class="pos" style="position: absolute;top:100px;right:0;font-size: 16px;display: flex;z-index:999;padding: 20px;">
+        <div @click="controlClipAction('play')" class="cursor-point">播放</div>
+        <div @click="controlClipAction('wait')" class="cursor-point" style="margin-left: 10px;">{{ waitText }}</div>
+        <div @click="controlClipAction" class="cursor-point" style="margin-left: 10px;">停止</div>
+        <div @click="nextStep" class="cursor-point" style="margin-left: 10px;">下一步</div>
+
+    </div>
 </template>
   
-<script setup name="SevenI" >
+<script setup name="BasicG" >
 /* eslint-disable */
 let stats;
 let grid;
 
-
 const wheels = [];
-import { ref, onMounted, onUnmounted, } from 'vue';
+import { ref, onMounted, onBeforeUnmount, } from 'vue';
 import Floors from '@/modules/Floors';
 import * as THREE from 'three';
 import gsap from 'gsap';
@@ -35,6 +41,11 @@ import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';   // FXAA
 // SMAA相比较FXAA抗锯齿效果更好一些
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass.js';   // SMAA抗锯齿Shader   
 
+// 引入CSS2渲染器CSS2DRenderer和CSS2模型对象CSS2DObject
+import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+
+const canvasDom = ref(null)
+
 
 let scene, camera, renderer, composer;
 let object;
@@ -49,6 +60,8 @@ const params = {
     pulsePeriod: 0,
     usePatternTexture: false
 };
+
+const waitText = ref("暂停")
 
 
 
@@ -81,140 +94,120 @@ mesh4.position.set(100, 0, 0)
 mesh5.position.set(200, 0, 0)
 group1.position.set(100, 100, -150)
 group1.add(mesh3, mesh4, mesh5)
-scene.add(group1);
 
-renderer.domElement.addEventListener('click', function (event) {
-    // .offsetY、.offsetX以canvas画布左上角为坐标原点,单位px
-    const px = event.offsetX;
-    const py = event.offsetY;
-    //屏幕坐标px、py转WebGL标准设备坐标x、y
-    //width、height表示canvas画布宽高度
-    const x = (px / widthI) * 2 - 1;
-    const y = -(py / heightI) * 2 + 1;
-    //创建一个射线投射器`Raycaster`
-    const raycaster = new THREE.Raycaster();
-    //.setFromCamera()计算射线投射器`Raycaster`的射线属性.ray
-    // 形象点说就是在点击位置创建一条射线，射线穿过的模型代表选中
-    raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
-    //.intersectObjects([mesh1, mesh2, mesh3])对参数中的网格模型对象进行射线交叉计算
-    // 未选中对象返回空数组[],选中一个对象，数组1个元素，选中两个对象，数组两个元素
-    const intersects = raycaster.intersectObjects([mesh3, mesh4, mesh5]);
-    console.log("射线器返回的对象", intersects);
-    // intersects.length大于0说明，说明选中了模型
-    if (intersects.length > 0) {
-        // 选中模型的第一个模型，设置为红色
-        intersects[0].object.material.color.set(0xff0000);
+scene.add(group1)
+
+
+// 给需要设置关键帧动画的模型命名
+mesh3.name = "Box";
+const times = [0, 3, 6]; //时间轴上，设置三个时刻0、3、6秒
+// times中三个不同时间点，物体分别对应values中的三个xyz坐标
+const values = [0, 0, 0, -500, 0, 0, 0, 0, 500];
+// 0~3秒，物体从(0,0,0)逐渐移动到(100,0,0),3~6秒逐渐从(100,0,0)移动到(0,0,100)
+const posKF = new THREE.KeyframeTrack('Box.position', times, values);
+// 从2秒到5秒，物体从红色逐渐变化为蓝色
+const colorKF = new THREE.KeyframeTrack('Box.material.color', [2, 5], [1, 0, 0, 0, 0, 1]);
+// 1.3 基于关键帧数据，创建一个clip关键帧动画对象，命名"test"，持续时
+
+// 1.3 AnimationClip表示一个关键帧动画，可以基于关键帧数据产生动画效果
+// 创建一个clip关键帧动画对象，命名"test"，动画持续时间6s
+// AnimationClip包含的所有关键帧数据都放到参数3数组中即可
+const clip = new THREE.AnimationClip("test", 6, [posKF, colorKF]);
+
+//包含关键帧动画的模型对象作为AnimationMixer的参数创建一个播放器mixer
+const mixer = new THREE.AnimationMixer(mesh3);
+
+const clipAction = mixer.clipAction(clip)
+
+clipAction.play()
+clipAction.loop = THREE.LoopOnce;  //只执行一次 
+clipAction.clampWhenFinished = true;  // 物体状态停留在动画结束的时候
+// clipAction.timeScale = 1;//默认
+clipAction.timeScale = 2;//2倍速
+// clipAction.stop();//动画停止结束，回到开始状态
+clipAction.paused = true;
+clipAction.time = 1;//物体状态为动画1秒对应状态
+clipAction.time = 3;//物体状态为动画3秒对应状态
+clip.duration = 4
+
+
+const controlClipAction = (type) => {
+    if (type === 'play') clipAction.play()
+    else if (type === 'wait') {
+        clipAction.paused = !clipAction.paused
+        if (clipAction.paused) waitText.value = "继续"
+        else waitText.value = "暂停"
     }
-})
-
-
-
-
-const effectComposerBlock = () => {
-    //创建模型
-    const boxGeometry = new THREE.BoxGeometry(100, 100, 100);
-    const boxMaterial = new THREE.MeshLambertMaterial({
-        color: 0x6690FF
-    })
-    const box = new THREE.Mesh(boxGeometry, boxMaterial)
-    const group = new THREE.Group();
-    const geometry = new THREE.BoxGeometry(40, 40, 100);
-    const material = new THREE.MeshPhongMaterial({ color: '#254EDB', flatShading: true });
-    const material2 = new THREE.MeshPhongMaterial({ color: '#3366FF' });
-    const mesh = new THREE.Mesh(geometry, material);
-    const mesh2 = new THREE.Mesh(geometry, material2);
-    mesh.position.set(150, 0, 0)
-    mesh2.position.set(250, 0, 0)
-    group.position.set(-450, 100, -450)
-    group.add(mesh2, mesh, box)
-    scene.add(group);
-
-    composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    outlinePass = new OutlinePass(new THREE.Vector2(widthI, heightI), scene, camera);
-    //模型描边颜色，默认白色         
-    outlinePass.visibleEdgeColor.set(0xffff00);
-    //高亮发光描边厚度
-    outlinePass.edgeThickness = 1;
-    //高亮描边发光强度
-    outlinePass.edgeStrength = 10;
-    //模型闪烁频率控制，默认0不闪烁
-    outlinePass.pulsePeriod = 0;
-
-    outlinePass.selectedObjects = [group];
-    composer.addPass(outlinePass);
-
-
-    const ray = new THREE.Ray()
-    ray.origin.set(1, 0, 3)
-    // ray.direction = new THREE.Vector3(100,100,100)
-    // 表示射线沿着x轴正方向
-    // ray.direction = new THREE.Vector3(1, 0, 0);
-    // 表示射线沿着x轴负方向
-    ray.direction = new THREE.Vector3(-1, 0, 0);
-
-    ray.direction = new THREE.Vector3(5, 0, 0).normalize();//.direction的值需要是单位向量，不是的话可以执行.normalize()归一化或者说标准化。
-
-    // 表示射线沿着xy坐标轴的中间线
-    ray.direction = new THREE.Vector3(1, 1, 0).normalize();
-
-    // 三角形三个点坐标
-    const p1 = new THREE.Vector3(100, 25, 0);
-    const p2 = new THREE.Vector3(100, -25, 25);
-    const p3 = new THREE.Vector3(100, -25, -25);
-    const point = new THREE.Vector3();//用来记录射线和三角形的交叉点
-    // `.intersectTriangle()`计算射线和三角形是否相交叉，相交返回交点，不相交返回null
-    const result = ray.intersectTriangle(p1, p2, p3, false, point);
-    console.log('交叉点坐标', point);
-    console.log('查看是否相交', result);
-
-    // const r = ray.intersectTriangle(p1, p2, p3, true, point);  //参数4设为true，表示进行背面剔除
-    // console.log('查看是否相交', r);
-
-    const raycaster = new THREE.Raycaster();
-    console.log('射线属性', raycaster.ray);
-
-    raycaster.ray.origin = new THREE.Vector3(-100, 0, 0)
-    raycaster.ray.direction = new THREE.Vector3(1, 0, 0)
-
-    const intersects = raycaster.intersectObjects([mesh, mesh2, box]);
-
-    console.log("射线器返回的对象", intersects);
-    // intersects.length大于0说明，说明选中了模型
-    if (intersects.length > 0) {
-        console.log("交叉点坐标", intersects[0].point);
-        console.log("交叉对象", intersects[0].object);
-        console.log("射线原点和交叉点距离", intersects[0].distance);
-        intersects[0].object.material.color.set(0x041730);
-    }
-
-
-
-
-
-
-
-
-
-
+    else clipAction.stop()
 }
 
 
+const gui = new GUI(); //创建GUI对象
+let duration = 10
+gui.add(clipAction, 'time', 0, duration).step(0.1).name('拖动').onChange(function () {
+    //如果动画处于播放状态会影响拖动条时间定位
+    if (!clipAction.paused){
+        clipAction.paused = true; //切换为暂停状态
+        bu.innerHTML = '播放'; //修改按钮样式
+    }
+});
+// gui.add(clipAction, 'time', 0, 6).step(0.5);
 
+
+const nextStep = () => {
+    clipAction.time += 0.5
+}
+
+// let mixer = null; //声明一个播放器变量
+// let clipAction = null; //声明一个播放器变量
+// const loader = new GLTFLoader();
+// loader.load("../../../public/models/datacenter.glb", function (gltf) {
+//     console.log('控制台查看gltf对象结构', gltf);
+
+//     let tfw = gltf.scene
+//     tfw.scale.set(20, 20, 20)
+//     scene.add(tfw)
+//     mixer = new THREE.AnimationMixer(gltf.scene);
+//     //  获取gltf.animations[0]的第一个clip动画对象
+//     clipAction = mixer.clipAction(gltf.animations[0]); //创建动画clipAction对象
+//     clipAction.play(); //播放动画
+// })
+
+
+
+
+// scene.add(group1);
+
+
+
+
+// const div = document.getElementById('tag')
+// const tag = new CSS2DObject(div)
+// tag.position.set(50, 0, 50);
+
+// scene.add(tag)
+
+const clock = new THREE.Clock();
 
 const render = () => {
     controls.update()
     requestAnimationFrame(render)
     renderer.render(scene, camera)
-    composer.render();
+
+    const frameT = clock.getDelta();
+    // 更新播放器相关的时间
+    mixer?.update(frameT);
 }
 
 onMounted(() => {
-    effectComposerBlock()
-    document.getElementById("sevenI")?.appendChild(renderer.domElement);
+    canvasDom.value?.appendChild(renderer.domElement);
     addLight()
     render()
     // createGUI()
+})
+
+onBeforeUnmount(()=>{
+    gui.hide()
 })
 
 

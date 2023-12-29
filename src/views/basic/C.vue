@@ -5,7 +5,7 @@
     </div>
 </template>
   
-<script lang="ts" setup name="SevenC">
+<script lang="ts" setup name="BasicC">
 /* eslint-disable */
 import { ref, onMounted } from 'vue';
 import Floors from '@/modules/Floors';

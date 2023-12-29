@@ -19,6 +19,10 @@ npm run dev
 
 gltf 在线编辑器 ： <https://gltf.nsdt.cloud/>
 
+### Blender
+
+b站Blender学习视频： <https://www.bilibili.com/video/BV1t54y1R7KF/?t=2007&p=2>
+
 ## 推荐文章
 
 1. 图解webgl <https://www.cnblogs.com/wanbo/p/6754066.html>

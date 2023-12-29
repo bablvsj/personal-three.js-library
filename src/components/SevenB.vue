@@ -1,5 +1,5 @@
 <template>
-    <div id="SevenB"></div>
+    <div id="BasicB"></div>
     <!-- <Popover
       ref="popoverRef"
       :top="popoverTop"
@@ -8,7 +8,7 @@
     ></Popover> -->
   </template>
   
-  <script lang="ts" setup name="SevenB">
+  <script lang="ts" setup name="BasicB">
   /* eslint-disable */
   import { ref, onMounted, type Ref } from 'vue';
   import Viewer, { type Animate } from '@/modules/Viewer';
@@ -51,7 +51,7 @@
   });
   
   const init = () => {
-    viewer = new Viewer('SevenB');
+    viewer = new Viewer('BasicB');
     // viewer.addAxis();
     // viewer.addStats();
     viewer.initRaycaster();

@@ -4,7 +4,7 @@
     <div ref="canvasDom" class="canvas-container"></div>
 </template>
   
-<script setup name="SevenH" >
+<script setup name="BasicH" >
 /* eslint-disable */
 let stats;
 let grid;

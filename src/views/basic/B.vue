@@ -2,7 +2,7 @@
     <div ref="canvasDom" class="canvas-container"></div>
 </template>
   
-<script lang="ts" setup name="SevenF">
+<script lang="ts" setup name="BasicF">
 /* eslint-disable */
 import { ref, onMounted } from 'vue';
 import Floors from '@/modules/Floors';

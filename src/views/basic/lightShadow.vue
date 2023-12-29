@@ -1,5 +1,5 @@
 <template>
-  <div ref="canvasDom" id="sevenD" style="height: 800px"></div>
+  <div ref="canvasDom" id="basicD" style="height: 800px"></div>
 </template>
 
 <script lang="ts" setup name="LightShadow">
@@ -143,7 +143,7 @@ const render = () => {
 }
 
 onMounted(() => {
-  document.getElementById('sevenD')?.appendChild(renderer.domElement)
+  document.getElementById('basicD')?.appendChild(renderer.domElement)
   // 设置背景颜色并启用透明度
   renderer.setClearColor(0x000000, 1);
   render()

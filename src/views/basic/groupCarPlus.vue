@@ -118,7 +118,7 @@ onMounted(() => {
 })
 
 const handleFullScreen = (type) => {
-  let canvasDom = document.getElementById('sevenD')
+  let canvasDom = document.getElementById('basicD')
   const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
   if (!fullscreenElement) {
     if (canvasDom.requestFullscreen) {
